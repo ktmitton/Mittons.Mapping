@@ -132,8 +132,9 @@ internal class HeaderBlockInequalityData : DataSourceGeneratorAttribute<HeaderBl
         () => null,
     ];
 
-    private Func<List<string>>[] _stringListVariations =>
+    private Func<List<string>?>[] _stringListVariations =>
     [
+        () => null,
         () => [],
         () => ["A"],
         () => ["A", "B"],
@@ -217,7 +218,7 @@ internal class HeaderBlockInequalityData : DataSourceGeneratorAttribute<HeaderBl
                                             new HeaderBlock()
                                             {
                                                 BoundingBox = buildBoundingBox(),
-                                                RequiredFeatures = [.. buildRequiredFeature(), "DIFFERENT"],
+                                                RequiredFeatures = [.. buildRequiredFeature() ?? [], "DIFFERENT"],
                                                 OptionalFeatures = buildOptionalFeature(),
                                                 WritingProgram = buildWritingProgram(),
                                                 Source = buildSource(),
@@ -243,7 +244,7 @@ internal class HeaderBlockInequalityData : DataSourceGeneratorAttribute<HeaderBl
                                             {
                                                 BoundingBox = buildBoundingBox(),
                                                 RequiredFeatures = buildRequiredFeature(),
-                                                OptionalFeatures = [.. buildRequiredFeature(), "DIFFERENT"],
+                                                OptionalFeatures = [.. buildRequiredFeature() ?? [], "DIFFERENT"],
                                                 WritingProgram = buildWritingProgram(),
                                                 Source = buildSource(),
                                                 OsmosisReplicationTimestamp = buildOsmosisReplicationTimestamp(),

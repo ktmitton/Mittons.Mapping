@@ -5,8 +5,8 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm;
 public class HeaderBlock : IEquatable<HeaderBlock>
 {
     public HeaderBoundingBox? BoundingBox { get; init; }
-    public List<string> RequiredFeatures { get; init; } = [];
-    public List<string> OptionalFeatures { get; init; } = [];
+    public List<string>? RequiredFeatures { get; init; }
+    public List<string>? OptionalFeatures { get; init; }
     public string? WritingProgram { get; init; }
     public string? Source { get; init; }
     public long? OsmosisReplicationTimestamp { get; init; }
@@ -18,15 +18,30 @@ public class HeaderBlock : IEquatable<HeaderBlock>
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
 
-        return
+        var passesEasyCheck =
             BoundingBox == other.BoundingBox &&
-            RequiredFeatures.SequenceEqual(other.RequiredFeatures) &&
-            OptionalFeatures.SequenceEqual(other.OptionalFeatures) &&
             WritingProgram == other.WritingProgram &&
             Source == other.Source &&
             OsmosisReplicationTimestamp == other.OsmosisReplicationTimestamp &&
             OsmosisReplicationSequenceNumber == other.OsmosisReplicationSequenceNumber &&
-            OsmosisReplicationBaseUrl == other.OsmosisReplicationBaseUrl;
+            OsmosisReplicationBaseUrl == other.OsmosisReplicationBaseUrl &&
+            (RequiredFeatures?.Count ?? 0) == (other.RequiredFeatures?.Count ?? 0) &&
+            (OptionalFeatures?.Count ?? 0) == (other.OptionalFeatures?.Count ?? 0);
+
+        if (
+            !passesEasyCheck ||
+            RequiredFeatures is null ||
+            OptionalFeatures is null ||
+            other.RequiredFeatures is null ||
+            other.OptionalFeatures is null
+        )
+        {
+            return false;
+        }
+
+        return
+            RequiredFeatures.SequenceEqual(other.RequiredFeatures) == true &&
+            OptionalFeatures.SequenceEqual(other.OptionalFeatures) == true;
     }
     public static bool operator ==(HeaderBlock? left, HeaderBlock? right) => Equals(left, right);
     public static bool operator !=(HeaderBlock? left, HeaderBlock? right) => !Equals(left, right);
