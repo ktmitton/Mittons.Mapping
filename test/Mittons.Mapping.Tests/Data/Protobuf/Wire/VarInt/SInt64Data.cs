@@ -1,0 +1,85 @@
+namespace Mittons.Mapping.Tests.Data.Protobuf.Wire.VarInt;
+
+internal class SInt64Data : DataSourceGeneratorAttribute<byte[], long>
+{
+    protected override IEnumerable<Func<(byte[], long)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
+    {
+        foreach (var variation in SInt16Data.PositiveData)
+        {
+            yield return () => variation;
+        }
+
+        foreach (var variation in SInt16Data.NegativeData)
+        {
+            yield return () => variation;
+        }
+
+        foreach (var variation in SInt32Data.PositiveData)
+        {
+            yield return () => variation;
+        }
+
+        foreach (var variation in SInt32Data.NegativeData)
+        {
+            yield return () => variation;
+        }
+
+        foreach (var variation in PositiveData)
+        {
+            yield return () => variation;
+        }
+
+        foreach (var variation in NegativeData)
+        {
+            yield return () => variation;
+        }
+    }
+
+    internal static IEnumerable<(byte[], long)> PositiveData
+    {
+        get
+        {
+            yield return (new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 17_179_869_184);
+            yield return (new byte[] { 0x82, 0x80, 0x80, 0x80, 0x80, 0x01 }, 17_179_869_185);
+
+            yield return (new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 2_199_023_255_552);
+            yield return (new byte[] { 0x82, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 2_199_023_255_553);
+
+            yield return (new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 281_474_976_710_656);
+            yield return (new byte[] { 0x82, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 281_474_976_710_657);
+
+            yield return (new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 36_028_797_018_963_968);
+            yield return (new byte[] { 0x82, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 36_028_797_018_963_969);
+
+            yield return (new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 4_611_686_018_427_387_904);
+            yield return (new byte[] { 0x82, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, 4_611_686_018_427_387_905);
+
+            yield return (new byte[] { 0xfc, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x03 }, long.MaxValue - 1);
+            yield return (new byte[] { 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x03 }, long.MaxValue);
+        }
+    }
+
+    internal static IEnumerable<(byte[], long)> NegativeData
+    {
+        get
+        {
+            yield return (new byte[] { 0xff, 0xff, 0xff, 0xff, 0x7f }, -17_179_869_184);
+            yield return (new byte[] { 0x81, 0x80, 0x80, 0x80, 0x80, 0x01 }, -17_179_869_185);
+
+            yield return (new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f }, -2_199_023_255_552);
+            yield return (new byte[] { 0x81, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, -2_199_023_255_553);
+
+            yield return (new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f }, -281_474_976_710_656);
+            yield return (new byte[] { 0x81, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, -281_474_976_710_657);
+
+            yield return (new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f }, -36_028_797_018_963_968);
+            yield return (new byte[] { 0x81, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, -36_028_797_018_963_969);
+
+            yield return (new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f }, -4_611_686_018_427_387_904);
+            yield return (new byte[] { 0x81, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01 }, -4_611_686_018_427_387_905);
+
+            yield return (new byte[] { 0xfd, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x03 }, long.MinValue + 1);
+            yield return (new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x03 }, long.MinValue);
+        }
+    }
+}
