@@ -1,6 +1,6 @@
 using Mittons.Mapping.Protobuf.Messages.Osm;
 
-namespace Mittons.Mapping.Tests.Data.Protobuf.Messages;
+namespace Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm;
 
 internal class BlobHeaderData : DataSourceGeneratorAttribute<byte[], BlobHeader>
 {

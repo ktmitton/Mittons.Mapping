@@ -1,5 +1,5 @@
 using Mittons.Mapping.Protobuf.Messages.Osm;
-using Mittons.Mapping.Tests.Data.Protobuf.Messages;
+using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm;
 
 namespace Mittons.Mapping.Tests.Protobuf.Messages.Osm;
 

@@ -1,4 +1,4 @@
-namespace Mittons.Mapping.Tests.Data.Protobuf.Messages;
+namespace Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm;
 
 internal class BlobData : DataSourceGeneratorAttribute<byte[], byte[], byte[], int>
 {
