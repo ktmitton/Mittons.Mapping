@@ -1,12 +1,12 @@
 using Mittons.Mapping.Protobuf.Messages.Osm;
-using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm;
+using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.BlobHeaderData;
 
 namespace Mittons.Mapping.Tests.Protobuf.Messages.Osm;
 
 public class BlobHeaderTests
 {
     [Test]
-    [BlobHeaderData]
+    [BlobHeaderFromMemoryData]
     public async Task AsBlobHeaderTests(Memory<byte> data, BlobHeader expectedResult)
     {
         var actualResult = data.AsBlobHeader();
