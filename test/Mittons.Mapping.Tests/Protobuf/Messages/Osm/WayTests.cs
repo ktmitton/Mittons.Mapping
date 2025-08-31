@@ -22,6 +22,23 @@ public class WayTests
         await Assert.That(actualInequalityOperatorResult).IsFalse();
     }
 
+    [Test]
+    [WayInequalityData]
+    public async Task InequalityTests(Way left, Way right)
+    {
+        // Arrange
+
+        // Act
+        var actualEqualityFunctionResult = left.Equals(right);
+        var actualEqualityOperatorResult = left == right;
+        var actualInequalityOperatorResult = left != right;
+
+        // Assert
+        await Assert.That(actualEqualityFunctionResult).IsFalse();
+        await Assert.That(actualEqualityOperatorResult).IsFalse();
+        await Assert.That(actualInequalityOperatorResult).IsTrue();
+    }
+
     // [Test]
     // [DenseInfoFromMemoryData]
     // public async Task AsDenseInfoTests(byte[] source, Info[] expectedInfo)
