@@ -26,6 +26,37 @@ public class Info : IEquatable<Info>
 
     public Info() { }
 
+    public Info(Memory<byte> source)
+    {
+        int memoryPosition = 0;
+        while (memoryPosition < source.Length)
+        {
+            switch (source.Span[memoryPosition++] >> 3)
+            {
+                case VersionFieldNumber:
+                    Version = source.ReadInt32(ref memoryPosition);
+                    continue;
+                case TimestampFieldNumber:
+                    Timestamp = source.ReadInt32(ref memoryPosition);
+                    continue;
+                case ChangeSetFieldNumber:
+                    ChangeSet = source.ReadInt64(ref memoryPosition);
+                    continue;
+                case UserIdFieldNumber:
+                    UserId = source.ReadInt32(ref memoryPosition);
+                    continue;
+                case UserSecurityIdFieldNumber:
+                    UserStringId = source.ReadInt32(ref memoryPosition);
+                    continue;
+                case IsVisibleFieldNumber:
+                    IsVisible = source.ReadBool(ref memoryPosition);
+                    continue;
+                default:
+                    throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Info message.");
+            }
+        }
+    }
+
     public bool Equals(Info? other)
     {
         if (other is null) return false;
@@ -45,8 +76,8 @@ public class Info : IEquatable<Info>
 
 internal static class InfoMemoryExtensions
 {
-    // internal static HeaderBlock AsHeaderBlock(this Memory<byte> source)
-    // {
-    //     return new HeaderBlock(source);
-    // }
+    internal static Info AsInfo(this Memory<byte> source)
+    {
+        return new Info(source);
+    }
 }

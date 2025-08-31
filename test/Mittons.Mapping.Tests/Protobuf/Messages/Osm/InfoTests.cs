@@ -38,4 +38,13 @@ public class InfoTests
         await Assert.That(actualEqualityOperatorResult).IsFalse();
         await Assert.That(actualInequalityOperatorResult).IsTrue();
     }
+
+    [Test]
+    [InfoFromMemoryData]
+    public async Task AsInfoTests(byte[] source, Info expectedInfo)
+    {
+        Info actualResult = new Memory<byte>(source).AsInfo();
+
+        await Assert.That(actualResult).IsEqualTo(expectedInfo);
+    }
 }
