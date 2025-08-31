@@ -7,6 +7,9 @@ public static class ReadLengthDelimitedMemoryExtensions
     public static string ReadString(this Memory<byte> memory, ref int memoryPosition)
         => memory.ReadLengthDelimited(ref memoryPosition).AsString();
 
+    public static string? ReadNullableString(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsNullableString();
+
     public static byte[] ReadBytes(this Memory<byte> memory, ref int memoryPosition)
         => memory.ReadLengthDelimited(ref memoryPosition).AsBytes();
 
@@ -45,6 +48,11 @@ public static class ReadLengthDelimitedMemoryExtensions
     internal static string AsString(this Memory<byte> memory)
     {
         return Encoding.UTF8.GetString(memory.Span);
+    }
+
+    internal static string? AsNullableString(this Memory<byte> memory)
+    {
+        return memory.Length == 0 ? null : Encoding.UTF8.GetString(memory.Span);
     }
 
     internal static byte[] AsBytes(this Memory<byte> memory)
