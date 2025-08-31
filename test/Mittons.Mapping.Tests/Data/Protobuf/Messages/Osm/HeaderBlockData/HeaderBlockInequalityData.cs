@@ -161,7 +161,7 @@ internal class HeaderBlockInequalityData : DataSourceGeneratorAttribute<HeaderBl
                                             {
                                                 BoundingBox = buildBoundingBox(),
                                                 RequiredFeatures = buildRequiredFeature(),
-                                                OptionalFeatures = [.. buildRequiredFeature() ?? [], "DIFFERENT"],
+                                                OptionalFeatures = [.. buildOptionalFeature() ?? [], "DIFFERENT"],
                                                 WritingProgram = buildWritingProgram(),
                                                 Source = buildSource(),
                                                 OsmosisReplicationTimestamp = buildOsmosisReplicationTimestamp(),
