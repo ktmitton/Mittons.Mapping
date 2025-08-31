@@ -1,12 +1,12 @@
 using Mittons.Mapping.Protobuf.Messages.Osm;
-using Mittons.Mapping.Tests.Data.Protobuf.Messages;
+using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.BlobData;
 
 namespace Mittons.Mapping.Tests.Protobuf.Messages.Osm;
 
 public class BlobTests
 {
     [Test]
-    [BlobData]
+    [BlobFromMemoryData]
     public async Task AsBlobTests(byte[] source, byte[] expectedMessageData, byte[] expectedDecompressedData, int expectedUncompressedSize)
     {
         var actualResult = new Memory<byte>(source).AsBlob();

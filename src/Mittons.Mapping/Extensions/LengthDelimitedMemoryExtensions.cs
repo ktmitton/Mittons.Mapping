@@ -4,7 +4,34 @@ namespace Mittons.Mapping.Extensions;
 
 public static class ReadLengthDelimitedMemoryExtensions
 {
-    public static Memory<byte> ReadLengthDelimited(this Memory<byte> memory, ref int memoryPosition)
+    public static string ReadString(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsString();
+
+    public static byte[] ReadBytes(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsBytes();
+
+    public static IEnumerable<string> ReadPackedRepeatedStrings(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedStringFields();
+
+    public static IEnumerable<int> ReadPackedInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedInt32Fields();
+
+    public static IEnumerable<long> ReadPackedInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedInt64Fields();
+
+    public static IEnumerable<int> ReadPackedSInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedSInt32Fields();
+
+    public static IEnumerable<long> ReadPackedSInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedSInt64Fields();
+
+    public static IEnumerable<uint> ReadPackedUInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedUInt32Fields();
+
+    public static IEnumerable<ulong> ReadPackedUInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedUInt64Fields();
+
+    internal static Memory<byte> ReadLengthDelimited(this Memory<byte> memory, ref int memoryPosition)
     {
         var length = memory.ReadVarInt(ref memoryPosition).AsUInt16();
 
@@ -15,22 +42,22 @@ public static class ReadLengthDelimitedMemoryExtensions
         return result;
     }
 
-    public static string AsString(this Memory<byte> memory)
+    internal static string AsString(this Memory<byte> memory)
     {
         return Encoding.UTF8.GetString(memory.Span);
     }
 
-    public static byte[] AsBytes(this Memory<byte> memory)
+    internal static byte[] AsBytes(this Memory<byte> memory)
     {
         return memory.ToArray();
     }
 
-    public static byte[] AsEmbeddedMessages(this Memory<byte> memory)
+    internal static byte[] AsEmbeddedMessages(this Memory<byte> memory)
     {
         throw new NotImplementedException();
     }
 
-    public static IEnumerable<string> AsPackedRepeatedStringFields(this Memory<byte> memory)
+    internal static IEnumerable<string> AsPackedRepeatedStringFields(this Memory<byte> memory)
     {
         int memoryPosition = 0;
 
@@ -42,7 +69,7 @@ public static class ReadLengthDelimitedMemoryExtensions
         }
     }
 
-    public static IEnumerable<int> AsPackedRepeatedInt32Fields(this Memory<byte> memory)
+    internal static IEnumerable<int> AsPackedRepeatedInt32Fields(this Memory<byte> memory)
     {
         int memoryPosition = 0;
 
@@ -54,7 +81,7 @@ public static class ReadLengthDelimitedMemoryExtensions
         }
     }
 
-    public static IEnumerable<long> AsPackedRepeatedInt64Fields(this Memory<byte> memory)
+    internal static IEnumerable<long> AsPackedRepeatedInt64Fields(this Memory<byte> memory)
     {
         int memoryPosition = 0;
 
@@ -66,7 +93,7 @@ public static class ReadLengthDelimitedMemoryExtensions
         }
     }
 
-    public static IEnumerable<int> AsPackedRepeatedSInt32Fields(this Memory<byte> memory)
+    internal static IEnumerable<int> AsPackedRepeatedSInt32Fields(this Memory<byte> memory)
     {
         int memoryPosition = 0;
 
@@ -78,7 +105,7 @@ public static class ReadLengthDelimitedMemoryExtensions
         }
     }
 
-    public static IEnumerable<long> AsPackedRepeatedSInt64Fields(this Memory<byte> memory)
+    internal static IEnumerable<long> AsPackedRepeatedSInt64Fields(this Memory<byte> memory)
     {
         int memoryPosition = 0;
 
@@ -90,7 +117,7 @@ public static class ReadLengthDelimitedMemoryExtensions
         }
     }
 
-    public static IEnumerable<uint> AsPackedRepeatedUInt32Fields(this Memory<byte> memory)
+    internal static IEnumerable<uint> AsPackedRepeatedUInt32Fields(this Memory<byte> memory)
     {
         int memoryPosition = 0;
 
@@ -102,7 +129,7 @@ public static class ReadLengthDelimitedMemoryExtensions
         }
     }
 
-    public static IEnumerable<ulong> AsPackedRepeatedUInt64Fields(this Memory<byte> memory)
+    internal static IEnumerable<ulong> AsPackedRepeatedUInt64Fields(this Memory<byte> memory)
     {
         int memoryPosition = 0;
 
