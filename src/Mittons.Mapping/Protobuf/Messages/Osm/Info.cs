@@ -5,7 +5,7 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm;
 public class Info : IEquatable<Info>
 {
     public int Version { get; init; } = -1;
-    public int? Timestamp { get; init; }
+    public long? Timestamp { get; init; }
     public long? ChangeSet { get; init; }
     public int? UserId { get; init; }
     public int? UserStringId { get; init; }
@@ -54,6 +54,42 @@ public class Info : IEquatable<Info>
                 default:
                     throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Info message.");
             }
+        }
+    }
+
+    public Info
+    (
+        Memory<byte> versionSource, ref int versionMemoryPosition,
+        Memory<byte> timestampSource, ref int timestampMemoryPosition,
+        Memory<byte> changeSetSource, ref int changeSetMemoryPosition,
+        Memory<byte> userIdSource, ref int userIdMemoryPosition,
+        Memory<byte> userStringIdSource, ref int userStringIdMemoryPosition,
+        Memory<byte> isVisibleSource, ref int isVisibleMemoryPosition
+    )
+    {
+        if (versionMemoryPosition < versionSource.Length)
+        {
+            Version = versionSource.ReadInt32(ref versionMemoryPosition);
+        }
+        if (timestampMemoryPosition < timestampSource.Length)
+        {
+            Timestamp = timestampSource.ReadSInt64(ref timestampMemoryPosition);
+        }
+        if (changeSetMemoryPosition < changeSetSource.Length)
+        {
+            ChangeSet = changeSetSource.ReadSInt64(ref changeSetMemoryPosition);
+        }
+        if (userIdMemoryPosition < userIdSource.Length)
+        {
+            UserId = userIdSource.ReadSInt32(ref userIdMemoryPosition);
+        }
+        if (userStringIdMemoryPosition < userStringIdSource.Length)
+        {
+            UserStringId = userStringIdSource.ReadSInt32(ref userStringIdMemoryPosition);
+        }
+        if (isVisibleMemoryPosition < isVisibleSource.Length)
+        {
+            IsVisible = isVisibleSource.ReadBool(ref isVisibleMemoryPosition);
         }
     }
 
