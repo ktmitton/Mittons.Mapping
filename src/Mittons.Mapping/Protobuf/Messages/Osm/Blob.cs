@@ -20,11 +20,6 @@ public class Blob
                 return _uncompressedSize.Value;
             }
 
-            if (MessageData.Length < 0)
-            {
-                throw new InvalidOperationException("MessageData.Length is negative, which is invalid.");
-            }
-
             return (uint)MessageData.Length;
         }
 
