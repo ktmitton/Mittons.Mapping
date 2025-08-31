@@ -7,7 +7,7 @@ public class BlobTests
 {
     [Test]
     [BlobFromMemoryData]
-    public async Task AsBlobTests(byte[] source, byte[] expectedMessageData, byte[] expectedDecompressedData, int expectedUncompressedSize)
+    public async Task AsBlobTests(byte[] source, byte[] expectedMessageData, byte[] expectedDecompressedData, uint expectedUncompressedSize)
     {
         var actualResult = new Memory<byte>(source).AsBlob();
 
