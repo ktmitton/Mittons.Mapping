@@ -58,7 +58,7 @@ public class HeaderBlock : IEquatable<HeaderBlock>
                     OsmosisReplicationBaseUrl = source.ReadString(ref memoryPosition);
                     continue;
                 default:
-                    throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in HeaderBoundingBox message.");
+                    throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in HeaderBlock message.");
             }
         }
     }
