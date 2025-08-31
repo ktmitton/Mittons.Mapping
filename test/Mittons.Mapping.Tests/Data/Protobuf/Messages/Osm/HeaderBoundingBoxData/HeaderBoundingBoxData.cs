@@ -1,8 +1,8 @@
 using Mittons.Mapping.Protobuf.Messages.Osm;
 
-namespace Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm;
+namespace Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.HeaderBoundingBoxData;
 
-internal class HeaderBoundingBoxData : DataSourceGeneratorAttribute<byte[], HeaderBoundingBox>
+internal class HeaderBoundingBoxFromMemoryData : DataSourceGeneratorAttribute<byte[], HeaderBoundingBox>
 {
     protected override IEnumerable<Func<(byte[], HeaderBoundingBox)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
     {
