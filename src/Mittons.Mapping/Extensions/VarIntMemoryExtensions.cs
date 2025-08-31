@@ -2,7 +2,34 @@ namespace Mittons.Mapping.Extensions;
 
 public static class VarIntMemoryExtensions
 {
-    public static Memory<byte> ReadVarInt(this Memory<byte> memory, ref int memoryPosition)
+    public static bool ReadBool(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsBool();
+
+    public static T ReadEnum<T>(this Memory<byte> memory, ref int memoryPosition) where T : Enum
+        => memory.ReadVarInt(ref memoryPosition).AsEnum<T>();
+
+    public static int ReadInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsInt32();
+
+    public static long ReadInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsInt64();
+
+    public static int ReadSInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsSInt32();
+
+    public static long ReadSInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsSInt64();
+
+    public static ushort ReadUInt16(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsUInt16();
+
+    public static uint ReadUInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsUInt32();
+
+    public static ulong ReadUInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadVarInt(ref memoryPosition).AsUInt64();
+
+    internal static Memory<byte> ReadVarInt(this Memory<byte> memory, ref int memoryPosition)
     {
         byte count = 0;
 
@@ -15,13 +42,13 @@ public static class VarIntMemoryExtensions
         return result;
     }
 
-    public static bool AsBool(this Memory<byte> memory)
+    internal static bool AsBool(this Memory<byte> memory)
         => memory.Span[0] != 0;
 
-    public static T AsEnum<T>(this Memory<byte> memory) where T : Enum
+    internal static T AsEnum<T>(this Memory<byte> memory) where T : Enum
         => (T)(object)memory.AsInt32();
 
-    public static int AsInt32(this Memory<byte> memory)
+    internal static int AsInt32(this Memory<byte> memory)
         => memory.Length switch
         {
             1 => memory.Span[0],
@@ -32,7 +59,7 @@ public static class VarIntMemoryExtensions
             _ => throw new InvalidOperationException("VarInt is too large to fit in an Int32."),
         };
 
-    public static long AsInt64(this Memory<byte> memory)
+    internal static long AsInt64(this Memory<byte> memory)
         => memory.Length switch
         {
             1 => (long)memory.Span[0],
@@ -48,21 +75,21 @@ public static class VarIntMemoryExtensions
             _ => throw new InvalidOperationException("VarInt is too large to fit in an Int64."),
         };
 
-    public static int AsSInt32(this Memory<byte> memory)
+    internal static int AsSInt32(this Memory<byte> memory)
     {
         uint value = memory.AsUInt32();
 
         return (int)((value >> 1) ^ -(value & 1));
     }
 
-    public static long AsSInt64(this Memory<byte> memory)
+    internal static long AsSInt64(this Memory<byte> memory)
     {
         ulong value = memory.AsUInt64();
 
         return (value & 1) == 0 ? (long)(value >> 1) : (long)(value >> 1) * -1 - 1;
     }
 
-    public static ushort AsUInt16(this Memory<byte> memory)
+    internal static ushort AsUInt16(this Memory<byte> memory)
         => memory.Length switch
         {
             1 => memory.Span[0],
@@ -71,7 +98,7 @@ public static class VarIntMemoryExtensions
             _ => throw new InvalidOperationException("VarInt is too large to fit in an Int32."),
         };
 
-    public static uint AsUInt32(this Memory<byte> memory)
+    internal static uint AsUInt32(this Memory<byte> memory)
         => memory.Length switch
         {
             1 => memory.Span[0],
@@ -82,7 +109,7 @@ public static class VarIntMemoryExtensions
             _ => throw new InvalidOperationException("VarInt is too large to fit in an Int32."),
         };
 
-    public static ulong AsUInt64(this Memory<byte> memory)
+    internal static ulong AsUInt64(this Memory<byte> memory)
         => memory.Length switch
         {
             1 => memory.Span[0],

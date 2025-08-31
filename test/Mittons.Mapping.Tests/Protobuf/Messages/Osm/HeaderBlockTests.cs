@@ -1,5 +1,5 @@
 using Mittons.Mapping.Protobuf.Messages.Osm;
-using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm;
+using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.HeaderBlockData;
 
 namespace Mittons.Mapping.Tests.Protobuf.Messages.Osm;
 
@@ -40,11 +40,11 @@ public class HeaderBlockTests
     }
 
     [Test]
-    [HeaderBoundingBoxData]
-    public async Task AsHeaderBoundingBoxTests(byte[] source, HeaderBoundingBox expectedBoundingBox)
+    [HeaderBlockFromMemoryData]
+    public async Task AsHeaderBlockTests(byte[] source, HeaderBlock expectedHeaderBlock)
     {
-        HeaderBoundingBox actualResult = new Memory<byte>(source).AsHeaderBoundingBox();
+        HeaderBlock actualResult = new Memory<byte>(source).AsHeaderBlock();
 
-        await Assert.That(actualResult).IsEqualTo(expectedBoundingBox);
+        await Assert.That(actualResult).IsEqualTo(expectedHeaderBlock);
     }
 }

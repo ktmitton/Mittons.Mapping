@@ -58,4 +58,15 @@ internal static class HeaderBoundingBoxMemoryExtensions
     {
         return new HeaderBoundingBox(source);
     }
+
+    internal static HeaderBoundingBox ReadHeaderBoundingBox(this Memory<byte> source, ref int memoryPosition)
+    {
+        var length = source.ReadUInt16(ref memoryPosition);
+
+        var boundingBox = source.Slice(memoryPosition, length).AsHeaderBoundingBox();
+
+        memoryPosition += length;
+
+        return boundingBox;
+    }
 }

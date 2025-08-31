@@ -60,11 +60,10 @@ public class Blob
         int memoryPosition = 0;
         while (memoryPosition < source.Length)
         {
-            switch (source.Span[memoryPosition] >> 3)
+            switch (source.Span[memoryPosition++] >> 3)
             {
                 case RawSizeFieldNumber:
                     CompressionAlgorithm = CompressionAlgorithm.Raw;
-                    ++memoryPosition;
                     UncompressedSize = source.ReadVarInt(ref memoryPosition).AsInt32();
                     continue;
                 case RawDataFieldNumber:
@@ -76,9 +75,11 @@ public class Blob
                 case LzmaDataFieldNumber:
                     CompressionAlgorithm = CompressionAlgorithm.Lzma;
                     break;
+                #pragma warning disable CS0618 // Type or member is obsolete
                 case Bzip2DataFieldNumber:
                     CompressionAlgorithm = CompressionAlgorithm.Bzip2;
                     break;
+                #pragma warning restore CS0618 // Type or member is obsolete
                 case Lz4DataFieldNumber:
                     CompressionAlgorithm = CompressionAlgorithm.Lz4;
                     break;
@@ -89,7 +90,6 @@ public class Blob
                     throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Blob message.");
             }
 
-            ++memoryPosition;
             MessageData = source.ReadLengthDelimited(ref memoryPosition);
         }
     }
