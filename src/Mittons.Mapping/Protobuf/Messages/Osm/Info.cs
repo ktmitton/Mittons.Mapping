@@ -37,7 +37,7 @@ public class Info : IEquatable<Info>
                     Version = source.ReadInt32(ref memoryPosition);
                     continue;
                 case TimestampFieldNumber:
-                    Timestamp = source.ReadInt32(ref memoryPosition);
+                    Timestamp = source.ReadInt64(ref memoryPosition);
                     continue;
                 case ChangeSetFieldNumber:
                     ChangeSet = source.ReadInt64(ref memoryPosition);
