@@ -6,12 +6,25 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm;
 
 public class Blob
 {
-    private int? _uncompressedSize;
+    private uint? _uncompressedSize;
 
     /// <summary>
     /// When compressed, this is the size of the uncompressed data.
     /// </summary>
-    public int UncompressedSize { get => _uncompressedSize ?? MessageData.Length; init => _uncompressedSize = value; }
+    public uint UncompressedSize
+    {
+        get
+        {
+            if (_uncompressedSize.HasValue)
+            {
+                return _uncompressedSize.Value;
+            }
+
+            return (uint)MessageData.Length;
+        }
+
+        init => _uncompressedSize = value;
+    }
 
     /// <summary>
     /// The data in the message, it may be compressed or uncompressed.
@@ -64,7 +77,7 @@ public class Blob
             {
                 case RawSizeFieldNumber:
                     CompressionAlgorithm = CompressionAlgorithm.Raw;
-                    UncompressedSize = source.ReadVarInt(ref memoryPosition).AsInt32();
+                    UncompressedSize = source.ReadUInt32(ref memoryPosition);
                     continue;
                 case RawDataFieldNumber:
                     CompressionAlgorithm = CompressionAlgorithm.Raw;

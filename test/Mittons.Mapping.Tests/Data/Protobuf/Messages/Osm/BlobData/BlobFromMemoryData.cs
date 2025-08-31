@@ -1,8 +1,8 @@
 namespace Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.BlobData;
 
-internal class BlobFromMemoryData : DataSourceGeneratorAttribute<byte[], byte[], byte[], int>
+internal class BlobFromMemoryData : DataSourceGeneratorAttribute<byte[], byte[], byte[], uint>
 {
-    protected override IEnumerable<Func<(byte[], byte[], byte[], int)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
+    protected override IEnumerable<Func<(byte[], byte[], byte[], uint)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
     {
         yield return () => (
             [
