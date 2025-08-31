@@ -78,6 +78,8 @@ internal static class DenseInfoMemoryExtensions
             memoryPosition += denseLength;
         }
 
+        Info? previousInfo = null;
+
         while
         (
             versionPosition < versionBuffer.Length ||
@@ -88,15 +90,18 @@ internal static class DenseInfoMemoryExtensions
             isVisiblePosition < isVisibleBuffer.Length
         )
         {
-            yield return new Info
+            previousInfo = new Info
             (
                 versionBuffer, ref versionPosition,
                 timestampBuffer, ref timestampPosition,
                 changeSetBuffer, ref changeSetPosition,
                 userIdBuffer, ref userIdPosition,
                 userStringIdBuffer, ref userStringIdPosition,
-                isVisibleBuffer, ref isVisiblePosition
+                isVisibleBuffer, ref isVisiblePosition,
+                previousInfo
             );
+
+            yield return previousInfo;
         }
     }
 }

@@ -18,26 +18,26 @@ internal class DenseInfoFromMemoryData : DataSourceGeneratorAttribute<byte[], In
                 0x10, // Field/Datatype Identifier
                 0x04,
                 0x01, // -1
-                0x02, // 1
-                0x83, 0x01, // -66
+                0x02, // (-1 + 1) = 0
+                0x83, 0x01, // (0 + -66) = -66
                 // Change Sets
                 0x18, // Field/Datatype Identifier
                 0x04,
                 0x02, // 1
-                0x03, // -2
-                0x84, 0x01, // 66
+                0x03, // -2 (1 + -2) = -1
+                0x84, 0x01, // (-1 + 66) = 65
                 // User Ids
                 0x20, // Field/Datatype Identifier
                 0x04,
                 0x03, // -2
-                0x04, // 2
-                0x85, 0x01, // -67
+                0x04, // 2 (-2 + 2) = 0
+                0x85, 0x01, // (0 + -67) = -67
                 // User String Ids
                 0x28, // Field/Datatype Identifier
                 0x04,
                 0x04, // 2
-                0x05, // -3
-                0x86, 0x01, // 67
+                0x05, // (2 + -3) = -1
+                0x86, 0x01, // (-1 + 67) = 66
                 // Is Visible Indicators
                 0x30, // Field/Datatype Identifier
                 0x03,
@@ -58,23 +58,24 @@ internal class DenseInfoFromMemoryData : DataSourceGeneratorAttribute<byte[], In
                 new()
                 {
                     Version = 1,
-                    Timestamp = 1,
-                    ChangeSet = -2,
-                    UserId = 2,
-                    UserStringId = -3,
+                    Timestamp = 0,
+                    ChangeSet = -1,
+                    UserId = 0,
+                    UserStringId = -1,
                     IsVisible = true,
                 },
                 new()
                 {
                     Version = 130,
                     Timestamp = -66,
-                    ChangeSet = 66,
+                    ChangeSet = 65,
                     UserId = -67,
-                    UserStringId = 67,
+                    UserStringId = 66,
                     IsVisible = true,
                 },
             ]
         );
+
         yield return () => (
             [
                 // Versions
@@ -87,26 +88,26 @@ internal class DenseInfoFromMemoryData : DataSourceGeneratorAttribute<byte[], In
                 0x10, // Field/Datatype Identifier
                 0x04,
                 0x02, // 1
-                0x83, 0x01, // -66
-                0x01, // -1
+                0x83, 0x01, // (1 + -66) = -65
+                0x01, // (-65 + -1) = -66
                 // Change Sets
                 0x18, // Field/Datatype Identifier
                 0x04,
                 0x03, // -2
-                0x84, 0x01, // 66
-                0x02, // 1
+                0x84, 0x01, // (-2 + 66) = 64
+                0x02, // (64 + 1) = 65
                 // User Ids
                 0x20, // Field/Datatype Identifier
                 0x04,
                 0x04, // 2
-                0x85, 0x01, // -67
-                0x03, // -2
+                0x85, 0x01, // (2 + -67) = -65
+                0x03, // (-65 + -2) = -67
                 // User String Ids
                 0x28, // Field/Datatype Identifier
                 0x04,
                 0x05, // -3
-                0x86, 0x01, // 67
-                0x04, // 2
+                0x86, 0x01, // (-3 + 67) = 64
+                0x04, // (64 + 2) = 66
                 // Is Visible Indicators
                 0x30, // Field/Datatype Identifier
                 0x03,
@@ -127,19 +128,19 @@ internal class DenseInfoFromMemoryData : DataSourceGeneratorAttribute<byte[], In
                 new()
                 {
                     Version = 130,
-                    Timestamp = -66,
-                    ChangeSet = 66,
-                    UserId = -67,
-                    UserStringId = 67,
+                    Timestamp = -65,
+                    ChangeSet = 64,
+                    UserId = -65,
+                    UserStringId = 64,
                     IsVisible = true,
                 },
                 new()
                 {
                     Version = 0,
-                    Timestamp = -1,
-                    ChangeSet = 1,
-                    UserId = -2,
-                    UserStringId = 2,
+                    Timestamp = -66,
+                    ChangeSet = 65,
+                    UserId = -67,
+                    UserStringId = 66,
                     IsVisible = false,
                 },
             ]
