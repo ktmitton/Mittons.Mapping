@@ -11,7 +11,25 @@ public class Blob
     /// <summary>
     /// When compressed, this is the size of the uncompressed data.
     /// </summary>
-    public uint UncompressedSize { get => _uncompressedSize ?? (uint)MessageData.Length; init => _uncompressedSize = value; }
+    public uint UncompressedSize
+    {
+        get
+        {
+            if (_uncompressedSize.HasValue)
+            {
+                return _uncompressedSize.Value;
+            }
+
+            if (MessageData.Length < 0)
+            {
+                throw new InvalidOperationException("MessageData.Length is negative, which is invalid.");
+            }
+
+            return (uint)MessageData.Length;
+        }
+
+        init => _uncompressedSize = value;
+    }
 
     /// <summary>
     /// The data in the message, it may be compressed or uncompressed.
