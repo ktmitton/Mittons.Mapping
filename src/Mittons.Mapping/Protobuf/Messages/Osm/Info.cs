@@ -64,7 +64,8 @@ public class Info : IEquatable<Info>
         Memory<byte> changeSetSource, ref int changeSetMemoryPosition,
         Memory<byte> userIdSource, ref int userIdMemoryPosition,
         Memory<byte> userStringIdSource, ref int userStringIdMemoryPosition,
-        Memory<byte> isVisibleSource, ref int isVisibleMemoryPosition
+        Memory<byte> isVisibleSource, ref int isVisibleMemoryPosition,
+        Info? previousInfo = null
     )
     {
         if (versionMemoryPosition < versionSource.Length)
@@ -73,19 +74,19 @@ public class Info : IEquatable<Info>
         }
         if (timestampMemoryPosition < timestampSource.Length)
         {
-            Timestamp = timestampSource.ReadSInt64(ref timestampMemoryPosition);
+            Timestamp = timestampSource.ReadSInt64(ref timestampMemoryPosition) + (previousInfo?.Timestamp ?? 0);
         }
         if (changeSetMemoryPosition < changeSetSource.Length)
         {
-            ChangeSet = changeSetSource.ReadSInt64(ref changeSetMemoryPosition);
+            ChangeSet = changeSetSource.ReadSInt64(ref changeSetMemoryPosition) + (previousInfo?.ChangeSet ?? 0);
         }
         if (userIdMemoryPosition < userIdSource.Length)
         {
-            UserId = userIdSource.ReadSInt32(ref userIdMemoryPosition);
+            UserId = userIdSource.ReadSInt32(ref userIdMemoryPosition) + (previousInfo?.UserId ?? 0);
         }
         if (userStringIdMemoryPosition < userStringIdSource.Length)
         {
-            UserStringId = userStringIdSource.ReadSInt32(ref userStringIdMemoryPosition);
+            UserStringId = userStringIdSource.ReadSInt32(ref userStringIdMemoryPosition) + (previousInfo?.UserStringId ?? 0);
         }
         if (isVisibleMemoryPosition < isVisibleSource.Length)
         {
