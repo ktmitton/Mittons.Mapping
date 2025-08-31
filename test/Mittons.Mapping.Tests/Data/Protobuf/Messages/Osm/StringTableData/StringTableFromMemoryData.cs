@@ -1,0 +1,73 @@
+namespace Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.StringTableData;
+
+internal class StringTableFromMemoryData : DataSourceGeneratorAttribute<byte[], string?[]>
+{
+    protected override IEnumerable<Func<(byte[], string?[])>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
+    {
+        yield return () => (
+            [
+                // null string
+                0x0a, 0x00,
+                // jakkoh
+                0x0a, 0x07, 0x6a, 0x61, 0x61, 0x6b, 0x6b, 0x6f, 0x68,
+                // GidonW
+                0x0a, 0x06, 0x47, 0x69, 0x64, 0x6f, 0x6e, 0x57,
+                // curve_geometry
+                0x0a, 0x0e, 0x63, 0x75, 0x72, 0x76, 0x65, 0x5f, 0x67, 0x65, 0x6f, 0x6d, 0x65, 0x74, 0x72, 0x79,
+                // yes
+                0x0a, 0x03, 0x79, 0x65, 0x73,
+            ],
+            [
+                null,
+                "jaakkoh",
+                "GidonW",
+                "curve_geometry",
+                "yes",
+            ]
+        );
+
+        yield return () => (
+            [
+                // null string
+                0x0a, 0x00,
+                // curve_geometry
+                0x0a, 0x0e, 0x63, 0x75, 0x72, 0x76, 0x65, 0x5f, 0x67, 0x65, 0x6f, 0x6d, 0x65, 0x74, 0x72, 0x79,
+                // yes
+                0x0a, 0x03, 0x79, 0x65, 0x73,
+                // jakkoh
+                0x0a, 0x07, 0x6a, 0x61, 0x61, 0x6b, 0x6b, 0x6f, 0x68,
+                // GidonW
+                0x0a, 0x06, 0x47, 0x69, 0x64, 0x6f, 0x6e, 0x57,
+            ],
+            [
+                null,
+                "curve_geometry",
+                "yes",
+                "jaakkoh",
+                "GidonW",
+            ]
+        );
+
+        yield return () => (
+            [
+                // curve_geometry
+                0x0a, 0x0e, 0x63, 0x75, 0x72, 0x76, 0x65, 0x5f, 0x67, 0x65, 0x6f, 0x6d, 0x65, 0x74, 0x72, 0x79,
+                // yes
+                0x0a, 0x03, 0x79, 0x65, 0x73,
+                // jakkoh
+                0x0a, 0x07, 0x6a, 0x61, 0x61, 0x6b, 0x6b, 0x6f, 0x68,
+                // GidonW
+                0x0a, 0x06, 0x47, 0x69, 0x64, 0x6f, 0x6e, 0x57,
+                // null string
+                0x0a, 0x00,
+            ],
+            [
+                "curve_geometry",
+                "yes",
+                "jaakkoh",
+                "GidonW",
+                null,
+            ]
+        );
+    }
+}
