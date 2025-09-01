@@ -34,6 +34,24 @@ public static class ReadLengthDelimitedMemoryExtensions
     public static IEnumerable<ulong> ReadPackedUInt64(this Memory<byte> memory, ref int memoryPosition)
         => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedUInt64Fields();
 
+    public static IEnumerable<int> ReadPackedDeltaCodedInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedDeltaCodedInt32Fields();
+
+    public static IEnumerable<long> ReadPackedDeltaCodedInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedDeltaCodedInt64Fields();
+
+    public static IEnumerable<int> ReadPackedDeltaCodedSInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedDeltaCodedSInt32Fields();
+
+    public static IEnumerable<long> ReadPackedDeltaCodedSInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedDeltaCodedSInt64Fields();
+
+    public static IEnumerable<uint> ReadPackedDeltaCodedUInt32(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedDeltaCodedUInt32Fields();
+
+    public static IEnumerable<ulong> ReadPackedDeltaCodedUInt64(this Memory<byte> memory, ref int memoryPosition)
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedDeltaCodedUInt64Fields();
+
     internal static Memory<byte> ReadLengthDelimited(this Memory<byte> memory, ref int memoryPosition)
     {
         var length = memory.ReadVarInt(ref memoryPosition).AsUInt16();
@@ -146,6 +164,102 @@ public static class ReadLengthDelimitedMemoryExtensions
             Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
 
             yield return lengthDelimited.AsUInt64();
+        }
+    }
+
+    internal static IEnumerable<int> AsPackedRepeatedDeltaCodedInt32Fields(this Memory<byte> memory)
+    {
+        int memoryPosition = 0;
+
+        int previousValue = 0;
+
+        while (memoryPosition < memory.Length)
+        {
+            Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
+
+            previousValue += lengthDelimited.AsInt32();
+
+            yield return previousValue;
+        }
+    }
+
+    internal static IEnumerable<long> AsPackedRepeatedDeltaCodedInt64Fields(this Memory<byte> memory)
+    {
+        int memoryPosition = 0;
+
+        long previousValue = 0;
+
+        while (memoryPosition < memory.Length)
+        {
+            Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
+
+            previousValue += lengthDelimited.AsInt64();
+
+            yield return previousValue;
+        }
+    }
+
+    internal static IEnumerable<int> AsPackedRepeatedDeltaCodedSInt32Fields(this Memory<byte> memory)
+    {
+        int memoryPosition = 0;
+
+        int previousValue = 0;
+
+        while (memoryPosition < memory.Length)
+        {
+            Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
+
+            previousValue += lengthDelimited.AsSInt32();
+
+            yield return previousValue;
+        }
+    }
+
+    internal static IEnumerable<long> AsPackedRepeatedDeltaCodedSInt64Fields(this Memory<byte> memory)
+    {
+        int memoryPosition = 0;
+
+        long previousValue = 0;
+
+        while (memoryPosition < memory.Length)
+        {
+            Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
+
+            previousValue += lengthDelimited.AsSInt64();
+
+            yield return previousValue;
+        }
+    }
+
+    internal static IEnumerable<uint> AsPackedRepeatedDeltaCodedUInt32Fields(this Memory<byte> memory)
+    {
+        int memoryPosition = 0;
+
+        uint previousValue = 0;
+
+        while (memoryPosition < memory.Length)
+        {
+            Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
+
+            previousValue += lengthDelimited.AsUInt32();
+
+            yield return previousValue;
+        }
+    }
+
+    internal static IEnumerable<ulong> AsPackedRepeatedDeltaCodedUInt64Fields(this Memory<byte> memory)
+    {
+        int memoryPosition = 0;
+
+        ulong previousValue = 0;
+
+        while (memoryPosition < memory.Length)
+        {
+            Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
+
+            previousValue += lengthDelimited.AsUInt64();
+
+            yield return previousValue;
         }
     }
 }
