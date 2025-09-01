@@ -39,12 +39,12 @@ public class WayTests
         await Assert.That(actualInequalityOperatorResult).IsTrue();
     }
 
-    // [Test]
-    // [DenseInfoFromMemoryData]
-    // public async Task AsDenseInfoTests(byte[] source, Info[] expectedInfo)
-    // {
-    //     Info[] actualResult = [.. new Memory<byte>(source).AsDenseInfo()];
+    [Test]
+    [WayFromMemoryData]
+    public async Task AsWayTests(byte[] source, Way expectedWay)
+    {
+        var actualResult = new Memory<byte>(source).AsWay();
 
-    //     await Assert.That(actualResult).IsEquivalentTo(expectedInfo);
-    // }
+        await Assert.That(actualResult).IsEquivalentTo(expectedWay);
+    }
 }

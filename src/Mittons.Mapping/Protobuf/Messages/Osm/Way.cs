@@ -4,13 +4,13 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm;
 
 public class Way : IEquatable<Way>
 {
-    public long Id { get; init; }
-    public uint[] Keys { get; init; } = [];
-    public uint[] Values { get; init; } = [];
+    public long Id { get; init; } = -1;
+    public uint[]? Keys { get; init; }
+    public uint[]? Values { get; init; }
     public Info? Info { get; init; }
-    public long[] References { get; init; } = [];
-    public long[] Latitudes { get; init; } = [];
-    public long[] Longitudes { get; init; } = [];
+    public long[]? References { get; init; }
+    public long[]? Latitudes { get; init; }
+    public long[]? Longitudes { get; init; }
 
     public const byte IdFieldNumber = 1;
     public const byte KeySegmentsFieldNumber = 2;
@@ -22,18 +22,52 @@ public class Way : IEquatable<Way>
 
     public Way() { }
 
+    public Way(Memory<byte> source)
+    {
+        int memoryPosition = 0;
+        while (memoryPosition < source.Length)
+        {
+            switch (source.Span[memoryPosition++] >> 3)
+            {
+                case IdFieldNumber:
+                    Id = source.ReadInt64(ref memoryPosition);
+                    continue;
+                case InfoFieldNumber:
+                    Info = source.ReadInfo(ref memoryPosition);
+                    continue;
+                case KeySegmentsFieldNumber:
+                    Keys = [.. source.ReadPackedUInt32(ref memoryPosition)];
+                    break;
+                case ValuesFieldNumber:
+                    Values = [.. source.ReadPackedUInt32(ref memoryPosition)];
+                    break;
+                case ReferencesFieldNumber:
+                    References = [.. source.ReadPackedSInt64(ref memoryPosition)];
+                    break;
+                case LatitudesFieldNumber:
+                    Latitudes = [.. source.ReadPackedSInt64(ref memoryPosition)];
+                    break;
+                case LongitudesFieldNumber:
+                    Longitudes = [.. source.ReadPackedSInt64(ref memoryPosition)];
+                    break;
+                default:
+                    throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Way message.");
+            }
+        }
+    }
+
     public bool Equals(Way? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
 
         return Id == other.Id &&
-               Keys.SequenceEqual(other.Keys) &&
-               Values.SequenceEqual(other.Values) &&
+               (Keys ?? []).SequenceEqual(other.Keys ?? []) &&
+               (Values ?? []).SequenceEqual(other.Values ?? []) &&
                Info == other.Info &&
-               References.SequenceEqual(other.References) &&
-               Latitudes.SequenceEqual(other.Latitudes) &&
-               Longitudes.SequenceEqual(other.Longitudes);
+               (References ?? []).SequenceEqual(other.References ?? []) &&
+               (Latitudes ?? []).SequenceEqual(other.Latitudes ?? []) &&
+               (Longitudes ?? []).SequenceEqual(other.Longitudes ?? []);
     }
 
     public override bool Equals(object? obj) => Equals(obj as Way);
@@ -44,8 +78,8 @@ public class Way : IEquatable<Way>
 
 internal static class WayMemoryExtensions
 {
-    // internal static HeaderBlock AsHeaderBlock(this Memory<byte> source)
-    // {
-    //     return new HeaderBlock(source);
-    // }
+    internal static Way AsWay(this Memory<byte> source)
+    {
+        return new Way(source);
+    }
 }

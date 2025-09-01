@@ -117,4 +117,13 @@ internal static class InfoMemoryExtensions
     {
         return new Info(source);
     }
+
+    internal static Info ReadInfo(this Memory<byte> source, ref int memoryPosition)
+    {
+        var infoLength = source.ReadUInt16(ref memoryPosition);
+        var info = source.Slice(memoryPosition, infoLength).AsInfo();
+        memoryPosition += infoLength;
+
+        return info;
+    }
 }
