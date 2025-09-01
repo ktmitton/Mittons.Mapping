@@ -64,6 +64,8 @@ public class Node : IEquatable<Node>
                Longitude == other.Longitude;
     }
 
+    public override int GetHashCode()
+    {
         var hash = new HashCode();
         hash.Add(Id);
         foreach (var key in Keys)
