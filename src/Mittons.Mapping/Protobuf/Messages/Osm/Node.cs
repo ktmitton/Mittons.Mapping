@@ -77,8 +77,8 @@ public class Node : IEquatable<Node>
         hash.Add(Longitude);
         return hash.ToHashCode();
     }
-    public static bool operator ==(Node? left, Node? right) => Equals(left, right);
-    public static bool operator !=(Node? left, Node? right) => !Equals(left, right);
+    public static bool operator ==(Node? left, Node? right) => left?.Equals(right) ?? right is null;
+    public static bool operator !=(Node? left, Node? right) => !(left?.Equals(right) ?? right is null);
     public override bool Equals(object? obj) => Equals(obj as Node);
 }
 
