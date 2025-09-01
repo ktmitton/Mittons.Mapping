@@ -34,7 +34,7 @@ internal class RelationFromMemoryData : DataSourceGeneratorAttribute<byte[], Rel
                 // Member Ids
                 0x48, 0x03, 0x04, 0x05, 0x06, // [2, (2 + -3) = -1, (-1 + 3) = 2]
                 // Member Types
-                0x50, 0x03, 0x00, 0x01, 0x02, // [0, 1, 2]
+                0x50, 0x03, 0x00, 0x01, 0x02, // [Relation.MemberType.Node, Relation.MemberType.Way, Relation.MemberType.Relation]
             ],
             new Relation()
             {
