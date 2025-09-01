@@ -42,13 +42,13 @@ public class Way : IEquatable<Way>
                     Values = [.. source.ReadPackedUInt32(ref memoryPosition)];
                     break;
                 case ReferencesFieldNumber:
-                    References = [.. source.ReadPackedSInt64(ref memoryPosition)];
+                    References = [.. source.ReadPackedDeltaCodedSInt64(ref memoryPosition)];
                     break;
                 case LatitudesFieldNumber:
-                    Latitudes = [.. source.ReadPackedSInt64(ref memoryPosition)];
+                    Latitudes = [.. source.ReadPackedDeltaCodedSInt64(ref memoryPosition)];
                     break;
                 case LongitudesFieldNumber:
-                    Longitudes = [.. source.ReadPackedSInt64(ref memoryPosition)];
+                    Longitudes = [.. source.ReadPackedDeltaCodedSInt64(ref memoryPosition)];
                     break;
                 default:
                     throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Way message.");
