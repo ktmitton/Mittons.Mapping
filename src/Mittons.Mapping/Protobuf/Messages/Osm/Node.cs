@@ -64,9 +64,16 @@ public class Node : IEquatable<Node>
                Longitude == other.Longitude;
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Id, Keys, Values, Info, Latitude, Longitude);
+        var hash = new HashCode();
+        hash.Add(Id);
+        foreach (var key in Keys)
+            hash.Add(key);
+        foreach (var value in Values)
+            hash.Add(value);
+        hash.Add(Info);
+        hash.Add(Latitude);
+        hash.Add(Longitude);
+        return hash.ToHashCode();
     }
     public static bool operator ==(Node? left, Node? right) => Equals(left, right);
     public static bool operator !=(Node? left, Node? right) => !Equals(left, right);
