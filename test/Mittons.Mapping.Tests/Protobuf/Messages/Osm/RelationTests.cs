@@ -39,12 +39,12 @@ public class RelationTests
         await Assert.That(actualInequalityOperatorResult).IsTrue();
     }
 
-    // [Test]
-    // [RelationFromMemoryData]
-    // public async Task AsRelationTests(byte[] source, Relation expectedRelation)
-    // {
-    //     var actualResult = new Memory<byte>(source).AsRelation();
+    [Test]
+    [RelationFromMemoryData]
+    public async Task AsRelationTests(byte[] source, Relation expectedRelation)
+    {
+        var actualResult = new Memory<byte>(source).AsRelation();
 
-    //     await Assert.That(actualResult).IsEquivalentTo(expectedRelation);
-    // }
+        await Assert.That(actualResult).IsEquivalentTo(expectedRelation);
+    }
 }
