@@ -30,7 +30,7 @@ internal class RelationFromMemoryData : DataSourceGeneratorAttribute<byte[], Rel
                     // Is Visible
                     0x30, 0x01,
                 // Role String Ids
-                0x40, 0x03, 0x02, 0x03, 0x04, // [1, 3, 4]
+                0x40, 0x03, 0x02, 0x03, 0x04, // [2, 3, 4]
                 // Member Ids
                 0x48, 0x03, 0x04, 0x05, 0x06, // [2, (2 + -3) = -1, (-1 + 3) = 2]
                 // Member Types
