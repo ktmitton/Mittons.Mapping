@@ -58,7 +58,7 @@ public class Relation : IEquatable<Relation>
                     MemberTypes = [.. source.ReadPackedEnum<MemberType>(ref memoryPosition)];
                     continue;
                 default:
-                    throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Info message.");
+                    throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Relation message.");
             }
         }
     }
