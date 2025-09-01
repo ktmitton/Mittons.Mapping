@@ -30,11 +30,11 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     // Is Visible
                     0x30, 0x01,
                 // References
-                0x41, 0x02, 0x02, 0x03, // [1, -2]
+                0x41, 0x02, 0x02, 0x03, // [1, (1 + -2) = -1]
                 // Latitudes
-                0x49, 0x02, 0x04, 0x05, // [2, -3]
+                0x49, 0x02, 0x04, 0x05, // [2, (2 + -3) = -1]
                 // Longitudes
-                0x51, 0x02, 0x06, 0x07, // [3, -4]
+                0x51, 0x02, 0x06, 0x07, // [3, (3 + -4) = -1]
             ],
             new Way()
             {
@@ -50,9 +50,9 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     UserStringId = 4,
                     IsVisible = true,
                 },
-                References = [1, -2],
-                Latitudes = [2, -3],
-                Longitudes = [3, -4],
+                References = [1, -1],
+                Latitudes = [2, -1],
+                Longitudes = [3, -1],
             }
         );
 
@@ -128,11 +128,11 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     // Is Visible
                     0x30, 0x01,
                 // References
-                0x41, 0x02, 0x02, 0x03, // [1, -2]
+                0x41, 0x02, 0x02, 0x03, // [1, (1 + -2) = -1]
                 // Latitudes
-                0x49, 0x02, 0x04, 0x05, // [2, -3]
+                0x49, 0x02, 0x04, 0x05, // [2, (2 + -3) = -1]
                 // Longitudes
-                0x51, 0x02, 0x06, 0x07, // [3, -4]
+                0x51, 0x02, 0x06, 0x07, // [3, (3 + -4) = -1]
             ],
             new Way()
             {
@@ -148,9 +148,9 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     UserStringId = 4,
                     IsVisible = true,
                 },
-                References = [1, -2],
-                Latitudes = [2, -3],
-                Longitudes = [3, -4],
+                References = [1, -1],
+                Latitudes = [2, -1],
+                Longitudes = [3, -1],
             }
         );
 
@@ -176,11 +176,11 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     // Is Visible
                     0x30, 0x01,
                 // References
-                0x41, 0x02, 0x02, 0x03, // [1, -2]
+                0x41, 0x02, 0x02, 0x03, // [1, (1 + -2) = -1]
                 // Latitudes
-                0x49, 0x02, 0x04, 0x05, // [2, -3]
+                0x49, 0x02, 0x04, 0x05, // [2, (2 + -3) = -1]
                 // Longitudes
-                0x51, 0x02, 0x06, 0x07, // [3, -4]
+                0x51, 0x02, 0x06, 0x07, // [3, (3 + -4) = -1]
             ],
             new Way()
             {
@@ -195,9 +195,9 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     UserStringId = 4,
                     IsVisible = true,
                 },
-                References = [1, -2],
-                Latitudes = [2, -3],
-                Longitudes = [3, -4],
+                References = [1, -1],
+                Latitudes = [2, -1],
+                Longitudes = [3, -1],
             }
         );
 
@@ -223,11 +223,11 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     // Is Visible
                     0x30, 0x01,
                 // References
-                0x41, 0x02, 0x02, 0x03, // [1, -2]
+                0x41, 0x02, 0x02, 0x03, // [1, (1 + -2) = -1]
                 // Latitudes
-                0x49, 0x02, 0x04, 0x05, // [2, -3]
+                0x49, 0x02, 0x04, 0x05, // [2, (2 + -3) = -1]
                 // Longitudes
-                0x51, 0x02, 0x06, 0x07, // [3, -4]
+                0x51, 0x02, 0x06, 0x07, // [3, (3 + -4) = -1]
             ],
             new Way()
             {
@@ -242,9 +242,9 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     UserStringId = 4,
                     IsVisible = true,
                 },
-                References = [1, -2],
-                Latitudes = [2, -3],
-                Longitudes = [3, -4],
+                References = [1, -1],
+                Latitudes = [2, -1],
+                Longitudes = [3, -1],
             }
         );
 
@@ -258,67 +258,20 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                 // Values
                 0x19, 0x02, 0x05, 0x06, // [5, 6]
                 // References
-                0x41, 0x02, 0x02, 0x03, // [1, -2]
+                0x41, 0x02, 0x02, 0x03, // [1, (1 + -2) = -1]
                 // Latitudes
-                0x49, 0x02, 0x04, 0x05, // [2, -3]
+                0x49, 0x02, 0x04, 0x05, // [2, (2 + -3) = -1]
                 // Longitudes
-                0x51, 0x02, 0x06, 0x07, // [3, -4]
+                0x51, 0x02, 0x06, 0x07, // [3, (3 + -4) = -1]
             ],
             new Way()
             {
                 Id = 1,
                 Keys = [3, 4],
                 Values = [5, 6],
-                References = [1, -2],
-                Latitudes = [2, -3],
-                Longitudes = [3, -4],
-            }
-        );
-
-        yield return () =>
-        (
-            [
-                // Id
-                0x09, 0x01, // 1
-                // Keys
-                0x11, 0x02, 0x03, 0x04, // [3, 4]
-                // Values
-                0x19, 0x02, 0x05, 0x06, // [5, 6]
-                // Info
-                0x22, 0x0c,
-                    // Version
-                    0x08, 0x00,
-                    // Timestamp
-                    0x10, 0x01,
-                    // Change Set
-                    0x18, 0x02,
-                    // User Id
-                    0x20, 0x03,
-                    // User String Id
-                    0x28, 0x04,
-                    // Is Visible
-                    0x30, 0x01,
-                // Latitudes
-                0x49, 0x02, 0x04, 0x05, // [2, -3]
-                // Longitudes
-                0x51, 0x02, 0x06, 0x07, // [3, -4]
-            ],
-            new Way()
-            {
-                Id = 1,
-                Keys = [3, 4],
-                Values = [5, 6],
-                Info = new()
-                {
-                    Version = 0,
-                    Timestamp = 1,
-                    ChangeSet = 2,
-                    UserId = 3,
-                    UserStringId = 4,
-                    IsVisible = true,
-                },
-                Latitudes = [2, -3],
-                Longitudes = [3, -4],
+                References = [1, -1],
+                Latitudes = [2, -1],
+                Longitudes = [3, -1],
             }
         );
 
@@ -345,10 +298,10 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     0x28, 0x04,
                     // Is Visible
                     0x30, 0x01,
-                // References
-                0x41, 0x02, 0x02, 0x03, // [1, -2]
+                // Latitudes
+                0x49, 0x02, 0x04, 0x05, // [2, (2 + -3) = -1]
                 // Longitudes
-                0x51, 0x02, 0x06, 0x07, // [3, -4]
+                0x51, 0x02, 0x06, 0x07, // [3, (3 + -4) = -1]
             ],
             new Way()
             {
@@ -364,8 +317,8 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     UserStringId = 4,
                     IsVisible = true,
                 },
-                References = [1, -2],
-                Longitudes = [3, -4],
+                Latitudes = [2, -1],
+                Longitudes = [3, -1],
             }
         );
 
@@ -393,9 +346,9 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     // Is Visible
                     0x30, 0x01,
                 // References
-                0x41, 0x02, 0x02, 0x03, // [1, -2]
-                // Latitudes
-                0x49, 0x02, 0x04, 0x05, // [2, -3]
+                0x41, 0x02, 0x02, 0x03, // [1, (1 + -2) = -1]
+                // Longitudes
+                0x51, 0x02, 0x06, 0x07, // [3, (3 + -4) = -1]
             ],
             new Way()
             {
@@ -411,8 +364,55 @@ internal class WayFromMemoryData : DataSourceGeneratorAttribute<byte[], Way>
                     UserStringId = 4,
                     IsVisible = true,
                 },
-                References = [1, -2],
-                Latitudes = [2, -3],
+                References = [1, -1],
+                Longitudes = [3, -1],
+            }
+        );
+
+        yield return () =>
+        (
+            [
+                // Id
+                0x09, 0x01, // 1
+                // Keys
+                0x11, 0x02, 0x03, 0x04, // [3, 4]
+                // Values
+                0x19, 0x02, 0x05, 0x06, // [5, 6]
+                // Info
+                0x22, 0x0c,
+                    // Version
+                    0x08, 0x00,
+                    // Timestamp
+                    0x10, 0x01,
+                    // Change Set
+                    0x18, 0x02,
+                    // User Id
+                    0x20, 0x03,
+                    // User String Id
+                    0x28, 0x04,
+                    // Is Visible
+                    0x30, 0x01,
+                // References
+                0x41, 0x02, 0x02, 0x03, // [1, (1 + -2) = -1]
+                // Latitudes
+                0x49, 0x02, 0x04, 0x05, // [2, (2 + -3) = -1]
+            ],
+            new Way()
+            {
+                Id = 1,
+                Keys = [3, 4],
+                Values = [5, 6],
+                Info = new()
+                {
+                    Version = 0,
+                    Timestamp = 1,
+                    ChangeSet = 2,
+                    UserId = 3,
+                    UserStringId = 4,
+                    IsVisible = true,
+                },
+                References = [1, -1],
+                Latitudes = [2, -1],
             }
         );
     }
