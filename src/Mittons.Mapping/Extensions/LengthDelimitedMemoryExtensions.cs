@@ -16,6 +16,9 @@ public static class ReadLengthDelimitedMemoryExtensions
     public static IEnumerable<string> ReadPackedRepeatedStrings(this Memory<byte> memory, ref int memoryPosition)
         => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedStringFields();
 
+    public static IEnumerable<T> ReadPackedEnum<T>(this Memory<byte> memory, ref int memoryPosition) where T : Enum
+        => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedEnumFields<T>();
+
     public static IEnumerable<int> ReadPackedInt32(this Memory<byte> memory, ref int memoryPosition)
         => memory.ReadLengthDelimited(ref memoryPosition).AsPackedRepeatedInt32Fields();
 
@@ -92,6 +95,18 @@ public static class ReadLengthDelimitedMemoryExtensions
             Memory<byte> lengthDelimited = memory.ReadLengthDelimited(ref memoryPosition);
 
             yield return lengthDelimited.AsString();
+        }
+    }
+
+    internal static IEnumerable<T> AsPackedRepeatedEnumFields<T>(this Memory<byte> memory) where T : Enum
+    {
+        int memoryPosition = 0;
+
+        while (memoryPosition < memory.Length)
+        {
+            Memory<byte> lengthDelimited = memory.ReadVarInt(ref memoryPosition);
+
+            yield return lengthDelimited.AsEnum<T>();
         }
     }
 
