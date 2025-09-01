@@ -13,10 +13,10 @@ public class Relation : IEquatable<Relation>
     public MemberType[] MemberTypes { get; init; } = [];
 
     public const byte IdFieldNumber = 1;
-    public const byte KeySegmentsFieldNumber = 2;
+    public const byte KeysFieldNumber = 2;
     public const byte ValuesFieldNumber = 3;
     public const byte InfoFieldNumber = 4;
-    public const byte RoleSecurityIdsFieldNumber = 8;
+    public const byte RoleStringIdsFieldNumber = 8;
     public const byte MemberIdsFieldNumber = 9;
     public const byte MemberTypesFieldNumber = 10;
 
@@ -28,6 +28,40 @@ public class Relation : IEquatable<Relation>
     }
 
     public Relation() { }
+
+    public Relation(Memory<byte> source)
+    {
+        int memoryPosition = 0;
+        while (memoryPosition < source.Length)
+        {
+            switch (source.Span[memoryPosition++] >> 3)
+            {
+                case IdFieldNumber:
+                    Id = source.ReadInt64(ref memoryPosition);
+                    continue;
+                case KeysFieldNumber:
+                    Keys = [.. source.ReadPackedUInt32(ref memoryPosition)];
+                    continue;
+                case ValuesFieldNumber:
+                    Values = [.. source.ReadPackedUInt32(ref memoryPosition)];
+                    continue;
+                case InfoFieldNumber:
+                    Info = source.ReadInfo(ref memoryPosition);
+                    continue;
+                case RoleStringIdsFieldNumber:
+                    RoleStringIds = [.. source.ReadPackedInt32(ref memoryPosition)];
+                    continue;
+                case MemberIdsFieldNumber:
+                    MemberIds = [.. source.ReadPackedDeltaCodedSInt64(ref memoryPosition)];
+                    continue;
+                case MemberTypesFieldNumber:
+                    MemberTypes = [.. source.ReadPackedEnum<MemberType>(ref memoryPosition)];
+                    continue;
+                default:
+                    throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Relation message.");
+            }
+        }
+    }
 
     public bool Equals(Relation? other)
     {
@@ -75,6 +109,6 @@ internal static class RelationMemoryExtensions
 {
     internal static Relation AsRelation(this Memory<byte> source)
     {
-        throw new NotImplementedException();
+        return new Relation(source);
     }
 }
