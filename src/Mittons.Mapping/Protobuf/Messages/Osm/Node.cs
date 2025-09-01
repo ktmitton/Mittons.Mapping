@@ -59,7 +59,7 @@ public class Node : IEquatable<Node>
         return Id == other.Id &&
                Keys.SequenceEqual(other.Keys) &&
                Values.SequenceEqual(other.Values) &&
-               Info == other.Info &&
+               (Info?.Equals(other.Info) ?? other.Info is null) &&
                Latitude == other.Latitude &&
                Longitude == other.Longitude;
     }
