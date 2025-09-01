@@ -21,7 +21,7 @@ public class DenseInfo
     public const byte TimestampFieldNumber = 2;
     public const byte ChangeSetFieldNumber = 3;
     public const byte UserIdFieldNumber = 4;
-    public const byte UserSecurityIdFieldNumber = 5;
+    public const byte UserStringIdFieldNumber = 5;
     public const byte IsVisibleFieldNumber = 6;
 }
 
@@ -65,7 +65,7 @@ internal static class DenseInfoMemoryExtensions
                 case DenseInfo.UserIdFieldNumber:
                     userIdBuffer = source.Slice(memoryPosition, denseLength);
                     break;
-                case DenseInfo.UserSecurityIdFieldNumber:
+                case DenseInfo.UserStringIdFieldNumber:
                     userStringIdBuffer = source.Slice(memoryPosition, denseLength);
                     break;
                 case DenseInfo.IsVisibleFieldNumber:
