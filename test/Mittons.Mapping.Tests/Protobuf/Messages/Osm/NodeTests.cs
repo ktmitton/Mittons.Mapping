@@ -39,12 +39,12 @@ public class NodeTests
         await Assert.That(actualInequalityOperatorResult).IsTrue();
     }
 
-    // [Test]
-    // [InfoFromMemoryData]
-    // public async Task AsInfoTests(byte[] source, Info expectedInfo)
-    // {
-    //     Info actualResult = new Memory<byte>(source).AsInfo();
+    [Test]
+    [NodeFromMemoryData]
+    public async Task AsNodeTests(byte[] source, Node expectedNode)
+    {
+        Node actualResult = new Memory<byte>(source).AsNode();
 
-    //     await Assert.That(actualResult).IsEqualTo(expectedInfo);
-    // }
+        await Assert.That(actualResult).IsEqualTo(expectedNode);
+    }
 }

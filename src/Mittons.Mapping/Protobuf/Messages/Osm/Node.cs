@@ -15,10 +15,41 @@ public class Node : IEquatable<Node>
     public const byte KeysFieldNumber = 2;
     public const byte ValuesFieldNumber = 3;
     public const byte InfoFieldNumber = 4;
-    public const byte LatitudeFieldNumber = 5;
-    public const byte LongitudeFieldNumber = 6;
+    public const byte LatitudeFieldNumber = 8;
+    public const byte LongitudeFieldNumber = 9;
 
     public Node() { }
+
+    public Node(Memory<byte> source)
+    {
+        int memoryPosition = 0;
+        while (memoryPosition < source.Length)
+        {
+            switch (source.Span[memoryPosition++] >> 3)
+            {
+                case IdFieldNumber:
+                    Id = source.ReadInt64(ref memoryPosition);
+                    continue;
+                case KeysFieldNumber:
+                    Keys = [.. source.ReadPackedUInt32(ref memoryPosition)];
+                    continue;
+                case ValuesFieldNumber:
+                    Values = [.. source.ReadPackedUInt32(ref memoryPosition)];
+                    continue;
+                case InfoFieldNumber:
+                    Info = source.ReadInfo(ref memoryPosition);
+                    continue;
+                case LatitudeFieldNumber:
+                    Latitude = source.ReadSInt64(ref memoryPosition);
+                    continue;
+                case LongitudeFieldNumber:
+                    Longitude = source.ReadSInt64(ref memoryPosition);
+                    continue;
+                default:
+                    throw new InvalidOperationException($"Unknown field number {source.Span[memoryPosition - 1] >> 3} encountered while reading Node from memory.");
+            }
+        }
+    }
 
     public bool Equals(Node? other)
     {
@@ -40,4 +71,12 @@ public class Node : IEquatable<Node>
     public static bool operator ==(Node? left, Node? right) => Equals(left, right);
     public static bool operator !=(Node? left, Node? right) => !Equals(left, right);
     public override bool Equals(object? obj) => Equals(obj as Node);
+}
+
+internal static class NodeMemoryExtensions
+{
+    internal static Node AsNode(this Memory<byte> source)
+    {
+        return new Node(source);
+    }
 }
