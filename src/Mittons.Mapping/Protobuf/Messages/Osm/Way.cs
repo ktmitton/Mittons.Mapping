@@ -71,7 +71,29 @@ public class Way : IEquatable<Way>
     }
 
     public override bool Equals(object? obj) => Equals(obj as Way);
-    public override int GetHashCode() => HashCode.Combine(Id, Keys, Values, Info, References, Latitudes, Longitudes);
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(
+            Id,
+            GetArrayHashCode(Keys),
+            GetArrayHashCode(Values),
+            Info,
+            GetArrayHashCode(References),
+            GetArrayHashCode(Latitudes),
+            GetArrayHashCode(Longitudes)
+        );
+    }
+    private static int GetArrayHashCode<T>(T[]? array)
+    {
+        if (array is null)
+            return 0;
+        var hash = new HashCode();
+        foreach (var item in array)
+        {
+            hash.Add(item);
+        }
+        return hash.ToHashCode();
+    }
     public static bool operator ==(Way left, Way right) => left?.Equals(right) ?? right is null;
     public static bool operator !=(Way left, Way right) => !(left == right);
 }
