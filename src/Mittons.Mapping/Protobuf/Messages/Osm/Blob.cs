@@ -39,7 +39,7 @@ public class Blob
                 return MessageData;
             case CompressionAlgorithm.ZLib:
                 {
-                    ManagedMemoryStream<byte> compressedStream = new(MessageData);
+                    ManagedMemoryStream compressedStream = new(MessageData);
                     using ZLibStream zlibStream = new(compressedStream, CompressionMode.Decompress, true);
                     using MemoryStream decompressedStream = new(buffer);
 

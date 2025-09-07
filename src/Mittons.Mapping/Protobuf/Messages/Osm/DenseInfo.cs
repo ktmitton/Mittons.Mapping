@@ -2,13 +2,13 @@ using Mittons.Mapping.Extensions;
 
 namespace Mittons.Mapping.Protobuf.Messages.Osm;
 
-public class DenseInfo
+public class DenseInfo : IEquatable<DenseInfo>
 {
     public List<int> Versions { get; init; } = [];
     public List<long> Timestamps { get; init; } = [];
     public List<long> ChangeSets { get; init; } = [];
     public List<int> UserIds { get; init; } = [];
-    public List<int> UserSecurityIds { get; init; } = [];
+    public List<int> UserStringIds { get; init; } = [];
     /// <summary>
     /// The visible flag is used to store history information. It indicates that the current object version has been
     /// created by a delete operation on the OSM API.
@@ -23,6 +23,48 @@ public class DenseInfo
     public const byte UserIdFieldNumber = 4;
     public const byte UserStringIdFieldNumber = 5;
     public const byte IsVisibleFieldNumber = 6;
+
+    public bool Equals(DenseInfo? other)
+    {
+        if (other is null) return false;
+
+        return
+            Versions.SequenceEqual(other.Versions) &&
+            Timestamps.SequenceEqual(other.Timestamps) &&
+            ChangeSets.SequenceEqual(other.ChangeSets) &&
+            UserIds.SequenceEqual(other.UserIds) &&
+            UserStringIds.SequenceEqual(other.UserStringIds) &&
+            IsVisibles.SequenceEqual(other.IsVisibles);
+    }
+
+    public override bool Equals(object? obj) => Equals(obj as DenseInfo);
+    public static bool operator ==(DenseInfo? left, DenseInfo? right) => Equals(left, right);
+    public static bool operator !=(DenseInfo? left, DenseInfo? right) => !Equals(left, right);
+
+    public override int GetHashCode()
+    {
+        HashCode hash = new();
+
+        foreach (var id in Versions)
+            hash.Add(id);
+
+        foreach (var latitude in Timestamps)
+            hash.Add(latitude);
+
+        foreach (var longitude in ChangeSets)
+            hash.Add(longitude);
+
+        foreach (var key in UserIds)
+            hash.Add(key);
+
+        foreach (var key in UserStringIds)
+            hash.Add(key);
+
+        foreach (var key in IsVisibles)
+            hash.Add(key);
+
+        return hash.ToHashCode();
+    }
 }
 
 internal static class DenseInfoMemoryExtensions

@@ -1,7 +1,7 @@
 namespace Mittons.Mapping.IO.Streams;
 
 // TODO: Create test cases, this was copied from an earlier prototype
-public class ManagedMemoryStream<T>(Memory<byte> memory) : Stream
+public class ManagedMemoryStream(Memory<byte> memory) : Stream
 {
     private readonly Memory<byte> _memory = memory;
 

@@ -1,13 +1,13 @@
 using Mittons.Mapping.Protobuf.Messages.Osm;
-using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.WayData;
+using Mittons.Mapping.Tests.Data.Protobuf.Messages.Osm.DenseNodeData;
 
 namespace Mittons.Mapping.Tests.Protobuf.Messages.Osm;
 
-public class WayTests
+public class DenseNodesTests
 {
     [Test]
-    [WayEqualityData]
-    public async Task EqualityTests(Way left, Way right)
+    [DenseNodesEqualityData]
+    public async Task EqualityTests(DenseNodes left, DenseNodes right)
     {
         // Arrange
 
@@ -23,8 +23,8 @@ public class WayTests
     }
 
     [Test]
-    [WayInequalityData]
-    public async Task InequalityTests(Way left, Way right)
+    [DenseNodesInequalityData]
+    public async Task InequalityTests(DenseNodes left, DenseNodes right)
     {
         // Arrange
 
@@ -40,11 +40,11 @@ public class WayTests
     }
 
     [Test]
-    [WayFromMemoryData]
-    public async Task AsWayTests(byte[] source, Way expectedWay)
+    [DenseNodesFromMemoryData]
+    public async Task AsDenseNodesTests(byte[] source, Node[] expectedNodes)
     {
-        var actualResult = new Memory<byte>(source).AsWay();
+        var actualResult = new Memory<byte>(source).AsDenseNodes();
 
-        await Assert.That(actualResult).IsEqualTo(expectedWay);
+        await Assert.That(actualResult).IsEquivalentTo(expectedNodes);
     }
 }
