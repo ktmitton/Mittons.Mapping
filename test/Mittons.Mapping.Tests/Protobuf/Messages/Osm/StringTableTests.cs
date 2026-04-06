@@ -7,7 +7,7 @@ public class StringTableTests
 {
     [Test]
     [StringTableFromMemoryData]
-    public async Task AsStringTableTests(byte[] source, string[] expectedStrings)
+    public async Task AsStringTableTests(byte[] source, string?[] expectedStrings)
     {
         IEnumerable<string?> actualResult = new Memory<byte>(source).AsStringTable();
 

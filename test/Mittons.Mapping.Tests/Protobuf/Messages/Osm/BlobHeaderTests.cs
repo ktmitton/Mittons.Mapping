@@ -9,10 +9,27 @@ public class BlobHeaderTests
     [BlobHeaderFromMemoryData]
     public async Task AsBlobHeaderTests(Memory<byte> data, BlobHeader expectedResult)
     {
+        // Arrange
+        var expectedIndexData = expectedResult.IndexData?.ToArray();
+
+        // Act
         var actualResult = data.AsBlobHeader();
 
+        // Assert
+        var actualIndexData = actualResult.IndexData?.ToArray();
+
         await Assert.That(actualResult.Type).IsEqualTo(expectedResult.Type);
-        await Assert.That(actualResult.IndexData?.ToArray()).IsEquivalentTo(expectedResult.IndexData?.ToArray());
+
+        if (expectedIndexData is null)
+        {
+            await Assert.That(actualIndexData).IsNull();
+        }
+        else
+        {
+            await Assert.That(actualIndexData).IsNotNull();
+            await Assert.That(actualIndexData).IsEquivalentTo(expectedIndexData);
+        }
+
         await Assert.That(actualResult.DataSize).IsEqualTo(expectedResult.DataSize);
     }
 }
