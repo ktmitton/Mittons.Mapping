@@ -9,7 +9,7 @@ public class StringTableTests
     [StringTableFromMemoryData]
     public async Task AsStringTableTests(byte[] source, string[] expectedStrings)
     {
-        IEnumerable<string> actualResult = new Memory<byte>(source).AsStringTable();
+        IEnumerable<string?> actualResult = new Memory<byte>(source).AsStringTable();
 
         await Assert.That(actualResult).IsEquivalentTo(expectedStrings);
     }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Mittons.Mapping.Tests" />
+    <InternalsVisibleTo Include="Mittons.Mapping.Benchmarks" />
   </ItemGroup>
 
 </Project>
