@@ -9,10 +9,14 @@ namespace Mittons.Mapping.Benchmarks.Extensions;
 /// <remarks>
 /// Reasons for tests:
 /// <br />- There are some UInt32 fields in the osm pbf definition that can't exceed the maximum value of a ushort, is
-/// it quicker to read them as Int16 instead of UInt32?
+/// it quicker to read them as UInt16 instead of UInt32?
 /// </remarks>
 [MemoryDiagnoser]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
+[AsciiDocExporter]
+[HtmlExporter]
+[PlainExporter]
+[MarkdownExporterAttribute.GitHub]
 [RankColumn]
 public class VarIntMemoryExtensionsBenchmarks
 {
