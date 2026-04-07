@@ -2,6 +2,4 @@
 using BenchmarkDotNet.Running;
 using Mittons.Mapping.Benchmarks.Extensions;
 
-Console.WriteLine("Hello, World!");
-
 BenchmarkRunner.Run<VarIntMemoryExtensionsBenchmarks>();
