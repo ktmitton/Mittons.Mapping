@@ -13,7 +13,7 @@ public class DenseNodes
 
 internal static class DenseNodesMemoryExtensions
 {
-    internal static IEnumerable<Node> ReadDenseNode(this Memory<byte> source)
+    internal static IEnumerable<Node> AsDenseNodes(this Memory<byte> source)
     {
         Memory<byte> idBuffer = new();
         Memory<byte> denseInfoBuffer = new();
