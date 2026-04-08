@@ -45,23 +45,23 @@ public class DenseInfo : IEquatable<DenseInfo>
     {
         HashCode hash = new();
 
-        foreach (var id in Versions)
-            hash.Add(id);
+        foreach (var version in Versions)
+            hash.Add(version);
 
-        foreach (var latitude in Timestamps)
-            hash.Add(latitude);
+        foreach (var timestamp in Timestamps)
+            hash.Add(timestamp);
 
-        foreach (var longitude in ChangeSets)
-            hash.Add(longitude);
+        foreach (var changeSet in ChangeSets)
+            hash.Add(changeSet);
 
-        foreach (var key in UserIds)
-            hash.Add(key);
+        foreach (var userId in UserIds)
+            hash.Add(userId);
 
-        foreach (var key in UserStringIds)
-            hash.Add(key);
+        foreach (var userStringId in UserStringIds)
+            hash.Add(userStringId);
 
-        foreach (var key in IsVisibles)
-            hash.Add(key);
+        foreach (var isVisible in IsVisibles)
+            hash.Add(isVisible);
 
         return hash.ToHashCode();
     }
