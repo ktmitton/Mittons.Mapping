@@ -1,5 +1,4 @@
 using Mittons.Mapping.Extensions;
-using Mittons.Mapping.IO.Streams;
 
 namespace Mittons.Mapping.Protobuf.Messages.Osm;
 
@@ -65,7 +64,7 @@ public class DenseNodes : IEquatable<DenseNodes>
 
 internal static class DenseNodesMemoryExtensions
 {
-    internal static IEnumerable<DenseNodes> AsDenseNodes(this Memory<byte> source)
+    internal static IEnumerable<Node> ReadDenseNode(this Memory<byte> source)
     {
         Memory<byte> idBuffer = new();
         Memory<byte> denseInfoBuffer = new();
@@ -113,19 +112,32 @@ internal static class DenseNodesMemoryExtensions
         int keyValuePosition = 0;
 
         Node? previousNode = null;
+        // TODO: This means the whole collection is materialized at once, what
+        //       if we instead did something like override operator+ so we could
+        //       read a dense info, then add the previous dense info to account
+        //       for the SInts? Doesn't have to be an operator overload, but
+        //       someway of updating the relative offsets.
+        Info[] infos = [.. denseInfoBuffer.AsDenseInfo()];
 
         while (idPosition < idBuffer.Length)
         {
-            Node node = new()
+            var keyValuePairs = keyValueBuffer.ReadKeyValuePairs(ref keyValuePosition);
+            int keyValuePairCount = keyValuePairs.Count == 0 ? 0 : keyValuePairs.Count / 2;
+
+            uint[] keys = [.. keyValuePairs.Select(x => x.Key)];
+            uint[] values = [.. keyValuePairs.Select(x => x.Value)];
+
+            previousNode = new()
             {
-                Id = idBuffer.ReadSInt32(ref idPosition),
-                Info = denseInfoBuffer.ReadInfo(ref infoPosition),
+                Id = idBuffer.ReadSInt32(ref idPosition) + (previousNode?.Id ?? 0),
+                Info = infos[infoPosition++],
                 Latitude = latitudeBuffer.ReadSInt64(ref latitudePosition) + (previousNode?.Latitude ?? 0),
                 Longitude = longitudeBuffer.ReadSInt64(ref longitudePosition) + (previousNode?.Longitude ?? 0),
-                KeyValues = keyValueBuffer.ReadInt32Array(ref keyValuePosition)
+                Keys = [.. keyValuePairs.Select(x => x.Key)],
+                Values = [.. keyValuePairs.Select(x => x.Value)],
             };
 
-            yield return denseNode;
+            yield return previousNode;
         }
     }
 }

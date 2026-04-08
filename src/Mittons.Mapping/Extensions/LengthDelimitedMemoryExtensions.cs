@@ -66,6 +66,20 @@ public static class ReadLengthDelimitedMemoryExtensions
         return result;
     }
 
+    internal static List<(uint Key, uint Value)> ReadKeyValuePairs(this Memory<byte> memory, ref int memoryPosition)
+    {
+        List<(uint Key, uint Value)> pairs = [];
+
+        for (uint key = memory.ReadUInt32(ref memoryPosition); key != 0; key = memory.ReadUInt32(ref memoryPosition))
+        {
+            uint value = memory.ReadUInt32(ref memoryPosition);
+
+            pairs.Add(new(key, value));
+        }
+
+        return pairs;
+    }
+
     internal static string AsString(this Memory<byte> memory)
     {
         return Encoding.UTF8.GetString(memory.Span);

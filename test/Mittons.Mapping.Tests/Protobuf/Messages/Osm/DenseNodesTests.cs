@@ -41,9 +41,9 @@ public class DenseNodesTests
 
     [Test]
     [DenseNodesFromMemoryData]
-    public async Task AsDenseNodesTests(byte[] source, Node[] expectedNodes)
+    public async Task ReadDenseNodeTests(byte[] source, Node[] expectedNodes)
     {
-        var actualResult = new Memory<byte>(source).AsDenseNodes();
+        var actualResult = new Memory<byte>(source).ReadDenseNode();
 
         await Assert.That(actualResult).IsEquivalentTo(expectedNodes);
     }
