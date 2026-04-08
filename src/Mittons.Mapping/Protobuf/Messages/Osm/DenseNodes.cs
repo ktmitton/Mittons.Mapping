@@ -121,7 +121,7 @@ internal static class DenseNodesMemoryExtensions
 
         while (idPosition < idBuffer.Length)
         {
-            var keyValuePairs = keyValueBuffer.ReadKeyValuePairs(ref keyValuePosition);
+            List<(uint Key, uint Value)> keyValuePairs = keyValueBuffer.Length == 0 ? [] : keyValueBuffer.ReadKeyValuePairs(ref keyValuePosition);
             int keyValuePairCount = keyValuePairs.Count == 0 ? 0 : keyValuePairs.Count / 2;
 
             uint[] keys = [.. keyValuePairs.Select(x => x.Key)];
