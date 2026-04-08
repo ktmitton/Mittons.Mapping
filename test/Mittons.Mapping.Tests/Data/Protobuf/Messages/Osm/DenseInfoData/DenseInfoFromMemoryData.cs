@@ -9,37 +9,37 @@ internal class DenseInfoFromMemoryData : DataSourceGeneratorAttribute<byte[], In
         yield return () => (
             [
                 // Versions
-                0x08, // Field/Datatype Identifier
+                0x0a, // Field/Datatype Identifier
                 0x04,
                 0x00, // 0
                 0x01, // 1
                 0x82, 0x01, // 130
                 // Timestamps
-                0x10, // Field/Datatype Identifier
+                0x12, // Field/Datatype Identifier
                 0x04,
                 0x01, // -1
                 0x02, // (-1 + 1) = 0
                 0x83, 0x01, // (0 + -66) = -66
                 // Change Sets
-                0x18, // Field/Datatype Identifier
+                0x1a, // Field/Datatype Identifier
                 0x04,
                 0x02, // 1
                 0x03, // -2 (1 + -2) = -1
                 0x84, 0x01, // (-1 + 66) = 65
                 // User Ids
-                0x20, // Field/Datatype Identifier
+                0x22, // Field/Datatype Identifier
                 0x04,
                 0x03, // -2
                 0x04, // 2 (-2 + 2) = 0
                 0x85, 0x01, // (0 + -67) = -67
                 // User String Ids
-                0x28, // Field/Datatype Identifier
+                0x2a, // Field/Datatype Identifier
                 0x04,
                 0x04, // 2
                 0x05, // (2 + -3) = -1
                 0x86, 0x01, // (-1 + 67) = 66
                 // Is Visible Indicators
-                0x30, // Field/Datatype Identifier
+                0x32, // Field/Datatype Identifier
                 0x03,
                 0x00, // false
                 0x01, // true
@@ -79,37 +79,37 @@ internal class DenseInfoFromMemoryData : DataSourceGeneratorAttribute<byte[], In
         yield return () => (
             [
                 // Versions
-                0x08, // Field/Datatype Identifier
+                0x0a, // Field/Datatype Identifier
                 0x04,
                 0x01, // 1
                 0x82, 0x01, // 130
                 0x00, // 0
                 // Timestamps
-                0x10, // Field/Datatype Identifier
+                0x12, // Field/Datatype Identifier
                 0x04,
                 0x02, // 1
                 0x83, 0x01, // (1 + -66) = -65
                 0x01, // (-65 + -1) = -66
                 // Change Sets
-                0x18, // Field/Datatype Identifier
+                0x1a, // Field/Datatype Identifier
                 0x04,
                 0x03, // -2
                 0x84, 0x01, // (-2 + 66) = 64
                 0x02, // (64 + 1) = 65
                 // User Ids
-                0x20, // Field/Datatype Identifier
+                0x22, // Field/Datatype Identifier
                 0x04,
                 0x04, // 2
                 0x85, 0x01, // (2 + -67) = -65
                 0x03, // (-65 + -2) = -67
                 // User String Ids
-                0x28, // Field/Datatype Identifier
+                0x2a, // Field/Datatype Identifier
                 0x04,
                 0x05, // -3
                 0x86, 0x01, // (-3 + 67) = 64
                 0x04, // (64 + 2) = 66
                 // Is Visible Indicators
-                0x30, // Field/Datatype Identifier
+                0x32, // Field/Datatype Identifier
                 0x03,
                 0x01, // true
                 0x01, // true
