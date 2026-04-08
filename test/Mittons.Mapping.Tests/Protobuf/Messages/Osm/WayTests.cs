@@ -45,6 +45,6 @@ public class WayTests
     {
         var actualResult = new Memory<byte>(source).AsWay();
 
-        await Assert.That(actualResult).IsEquivalentTo(expectedWay);
+        await Assert.That(actualResult).IsEqualTo(expectedWay);
     }
 }
