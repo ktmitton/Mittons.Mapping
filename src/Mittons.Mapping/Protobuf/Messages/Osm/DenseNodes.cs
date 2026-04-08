@@ -72,9 +72,6 @@ internal static class DenseNodesMemoryExtensions
         {
             List<(uint Key, uint Value)> keyValuePairs = keyValueBuffer.Length == 0 ? [] : keyValueBuffer.ReadKeyValuePairs(ref keyValuePosition);
 
-            uint[] keys = [.. keyValuePairs.Select(x => x.Key)];
-            uint[] values = [.. keyValuePairs.Select(x => x.Value)];
-
             previousNode = new()
             {
                 Id = idBuffer.ReadSInt64(ref idPosition) + (previousNode?.Id ?? 0),
