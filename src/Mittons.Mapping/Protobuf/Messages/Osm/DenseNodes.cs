@@ -129,7 +129,7 @@ internal static class DenseNodesMemoryExtensions
 
             previousNode = new()
             {
-                Id = idBuffer.ReadSInt32(ref idPosition) + (previousNode?.Id ?? 0),
+                Id = idBuffer.ReadSInt64(ref idPosition) + (previousNode?.Id ?? 0),
                 Info = infos[infoPosition++],
                 Latitude = latitudeBuffer.ReadSInt64(ref latitudePosition) + (previousNode?.Latitude ?? 0),
                 Longitude = longitudeBuffer.ReadSInt64(ref longitudePosition) + (previousNode?.Longitude ?? 0),
