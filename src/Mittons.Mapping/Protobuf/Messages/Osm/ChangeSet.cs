@@ -1,12 +1,14 @@
+using System;
 using Mittons.Mapping.Extensions;
 
-namespace Mittons.Mapping.Protobuf.Messages.Osm;
-
-internal static class ChangeSetMemoryExtensions
+namespace Mittons.Mapping.Protobuf.Messages.Osm
 {
-    internal static long AsChangeSet(this Memory<byte> source)
+    internal static class ChangeSetMemoryExtensions
     {
-        int memoryPosition = 0;
-        return source.ReadInt64(ref memoryPosition);
+        internal static long AsChangeSet(this Memory<byte> source)
+        {
+            int memoryPosition = 0;
+            return source.ReadInt64(ref memoryPosition);
+        }
     }
 }
