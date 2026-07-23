@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Mittons.Mapping.Extensions;
 
@@ -27,6 +28,39 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
         public Way(Memory<byte> source)
         {
             int memoryPosition = 0;
+            while (memoryPosition < source.Length)
+            {
+                switch (source.Span[memoryPosition++] >> 3)
+                {
+                    case IdFieldNumber:
+                        Id = source.ReadInt64(ref memoryPosition);
+                        continue;
+                    case InfoFieldNumber:
+                        Info = source.ReadInfo(ref memoryPosition);
+                        continue;
+                    case KeySegmentsFieldNumber:
+                        Keys = source.ReadPackedUInt32(ref memoryPosition).ToArray();
+                        break;
+                    case ValuesFieldNumber:
+                        Values = source.ReadPackedUInt32(ref memoryPosition).ToArray();
+                        break;
+                    case ReferencesFieldNumber:
+                        References = source.ReadPackedDeltaCodedSInt64(ref memoryPosition).ToArray();
+                        break;
+                    case LatitudesFieldNumber:
+                        Latitudes = source.ReadPackedDeltaCodedSInt64(ref memoryPosition).ToArray();
+                        break;
+                    case LongitudesFieldNumber:
+                        Longitudes = source.ReadPackedDeltaCodedSInt64(ref memoryPosition).ToArray();
+                        break;
+                    default:
+                        throw new InvalidOperationException($"Unknown field number [{source.Span[memoryPosition - 1] >> 3}] in Way message.");
+                }
+            }
+        }
+
+        public Way(Memory<byte> source, ref int memoryPosition)
+        {
             while (memoryPosition < source.Length)
             {
                 switch (source.Span[memoryPosition++] >> 3)
@@ -105,6 +139,11 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
         internal static Way AsWay(this Memory<byte> source)
         {
             return new Way(source);
+        }
+
+        internal static Way AsWay(this Memory<byte> source, ref int memoryPosition)
+        {
+            return new Way(source, ref memoryPosition);
         }
     }
 }

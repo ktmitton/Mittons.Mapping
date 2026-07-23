@@ -73,13 +73,64 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
 
     internal static class PrimitiveGroupMemoryExtensions
     {
-        internal static IEnumerable<Node> AsDenseNodes(this Memory<byte> source)
+        private static IEnumerable<long> AsChangeSets(this Memory<byte> source)
         {
-            Memory<byte> idBuffer = new();
-            Memory<byte> denseInfoBuffer = new();
-            Memory<byte> latitudeBuffer = new();
-            Memory<byte> longitudeBuffer = new();
-            Memory<byte> keyValueBuffer = new();
+            int memoryPosition = 0;
+
+            while (memoryPosition < source.Length)
+            {
+                // Eat up the first byte, which just says what type the content is, which we already know
+                ++memoryPosition;
+                yield return source.ReadInt64(ref memoryPosition);
+            }
+        }
+
+        private static IEnumerable<Node> AsNodes(this Memory<byte> source)
+        {
+            int memoryPosition = 0;
+
+            while (memoryPosition < source.Length)
+            {
+                // Eat up the first byte, which just says what type the content is, which we already know
+                ++memoryPosition;
+
+                var denseLength = source.ReadInt32(ref memoryPosition);
+
+                yield return source.Slice(memoryPosition, denseLength).AsNode();
+            }
+        }
+
+        private static IEnumerable<Relation> AsRelations(this Memory<byte> source)
+        {
+            int memoryPosition = 0;
+
+            while (memoryPosition < source.Length)
+            {
+                // Eat up the first byte, which just says what type the content is, which we already know
+                ++memoryPosition;
+                yield return source.AsRelation(ref memoryPosition);
+            }
+        }
+
+        private static IEnumerable<Way> AsWays(this Memory<byte> source)
+        {
+            int memoryPosition = 0;
+
+            while (memoryPosition < source.Length)
+            {
+                // Eat up the first byte, which just says what type the content is, which we already know
+                ++memoryPosition;
+                yield return source.AsWay(ref memoryPosition);
+            }
+        }
+
+        internal static PrimitiveGroup AsPrimitiveGroup(this Memory<byte> source)
+        {
+            Memory<byte> nodesBuffer = new();
+            Memory<byte> denseNodesBuffer = new();
+            Memory<byte> waysBuffer = new();
+            Memory<byte> relationsBuffer = new();
+            Memory<byte> changeSetsBuffer = new();
 
             int memoryPosition = 0;
             byte fieldDatatypeIdentifier;
@@ -92,20 +143,20 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
 
                 switch (fieldDatatypeIdentifier >> 3)
                 {
-                    case DenseNodes.IdFieldNumber:
-                        idBuffer = source.Slice(memoryPosition, denseLength);
+                    case PrimitiveGroup.NodesFieldNumber:
+                        nodesBuffer = source.Slice(memoryPosition, denseLength);
                         break;
-                    case DenseNodes.DenseInfoFieldNumber:
-                        denseInfoBuffer = source.Slice(memoryPosition, denseLength);
+                    case PrimitiveGroup.DenseNodesFieldNumber:
+                        denseNodesBuffer = source.Slice(memoryPosition, denseLength);
                         break;
-                    case DenseNodes.LatitudeFieldNumber:
-                        latitudeBuffer = source.Slice(memoryPosition, denseLength);
+                    case PrimitiveGroup.WaysFieldNumber:
+                        waysBuffer = source.Slice(memoryPosition, denseLength);
                         break;
-                    case DenseNodes.LongitudeFieldNumber:
-                        longitudeBuffer = source.Slice(memoryPosition, denseLength);
+                    case PrimitiveGroup.RelationsFieldNumber:
+                        relationsBuffer = source.Slice(memoryPosition, denseLength);
                         break;
-                    case DenseNodes.KeyValueFieldNumber:
-                        keyValueBuffer = source.Slice(memoryPosition, denseLength);
+                    case PrimitiveGroup.ChangeSetsFieldNumber:
+                        changeSetsBuffer = source.Slice(memoryPosition, denseLength);
                         break;
                     default:
                         throw new InvalidOperationException($"Unexpected field number {fieldDatatypeIdentifier >> 3} in DenseNodes.");
@@ -114,36 +165,34 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
                 memoryPosition += denseLength;
             }
 
-            int idPosition = 0;
-            int infoPosition = 0;
-            int latitudePosition = 0;
-            int longitudePosition = 0;
-            int keyValuePosition = 0;
+            PrimitiveGroup group = new PrimitiveGroup();
 
-            Node? previousNode = null;
-            // TODO: This means the whole collection is materialized at once, what
-            //       if we instead did something like override operator+ so we could
-            //       read a dense info, then add the previous dense info to account
-            //       for the SInts? Doesn't have to be an operator overload, but
-            //       someway of updating the relative offsets.
-            Info[] infos = [.. denseInfoBuffer.AsDenseInfo()];
-
-            while (idPosition < idBuffer.Length)
+            if (nodesBuffer.Length > 0)
             {
-                List<(uint Key, uint Value)> keyValuePairs = keyValueBuffer.Length == 0 ? [] : keyValueBuffer.ReadKeyValuePairs(ref keyValuePosition);
-
-                previousNode = new()
-                {
-                    Id = idBuffer.ReadSInt64(ref idPosition) + (previousNode?.Id ?? 0),
-                    Info = infoPosition < infos.Length ? infos[infoPosition++] : null,
-                    Latitude = latitudeBuffer.ReadSInt64(ref latitudePosition) + (previousNode?.Latitude ?? 0),
-                    Longitude = longitudeBuffer.ReadSInt64(ref longitudePosition) + (previousNode?.Longitude ?? 0),
-                    Keys = [.. keyValuePairs.Select(x => x.Key)],
-                    Values = [.. keyValuePairs.Select(x => x.Value)],
-                };
-
-                yield return previousNode;
+                group.Nodes.AddRange(nodesBuffer.AsNodes());
             }
+
+            if (denseNodesBuffer.Length > 0)
+            {
+                group.Nodes.AddRange(denseNodesBuffer.AsDenseNodes());
+            }
+
+            if (waysBuffer.Length > 0)
+            {
+                group.Ways.AddRange(waysBuffer.AsWays());
+            }
+
+            if (relationsBuffer.Length > 0)
+            {
+                group.Relations.AddRange(relationsBuffer.AsRelations());
+            }
+
+            if (changeSetsBuffer.Length > 0)
+            {
+                group.ChangeSets.AddRange(changeSetsBuffer.AsChangeSets());
+            }
+
+            return group;
         }
     }
 }

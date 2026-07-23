@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Mittons.Mapping.Extensions;
 
 namespace Mittons.Mapping.Protobuf.Messages.Osm
@@ -8,6 +9,11 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
         internal static long AsChangeSet(this Memory<byte> source)
         {
             int memoryPosition = 0;
+            return source.ReadInt64(ref memoryPosition);
+        }
+
+        internal static long AsChangeSet(this Memory<byte> source, ref int memoryPosition)
+        {
             return source.ReadInt64(ref memoryPosition);
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Mittons.Mapping.Extensions;
 
@@ -25,6 +26,38 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
         public Node(Memory<byte> source)
         {
             int memoryPosition = 0;
+            while (memoryPosition < source.Length)
+            {
+                var a = source.Span[memoryPosition];
+                var b = source.Span[memoryPosition] >> 3;
+                switch (source.Span[memoryPosition++] >> 3)
+                {
+                    case IdFieldNumber:
+                        Id = source.ReadInt64(ref memoryPosition);
+                        continue;
+                    case KeysFieldNumber:
+                        Keys = source.ReadPackedUInt32(ref memoryPosition).ToArray();
+                        continue;
+                    case ValuesFieldNumber:
+                        Values = source.ReadPackedUInt32(ref memoryPosition).ToArray();
+                        continue;
+                    case InfoFieldNumber:
+                        Info = source.ReadInfo(ref memoryPosition);
+                        continue;
+                    case LatitudeFieldNumber:
+                        Latitude = source.ReadSInt64(ref memoryPosition);
+                        continue;
+                    case LongitudeFieldNumber:
+                        Longitude = source.ReadSInt64(ref memoryPosition);
+                        continue;
+                    default:
+                        throw new InvalidOperationException($"Unknown field number {source.Span[memoryPosition - 1] >> 3} encountered while reading Node from memory.");
+                }
+            }
+        }
+
+        public Node(Memory<byte> source, ref int memoryPosition)
+        {
             while (memoryPosition < source.Length)
             {
                 switch (source.Span[memoryPosition++] >> 3)
@@ -89,6 +122,11 @@ namespace Mittons.Mapping.Protobuf.Messages.Osm
         internal static Node AsNode(this Memory<byte> source)
         {
             return new Node(source);
+        }
+
+        internal static Node AsNode(this Memory<byte> source, ref int memoryPosition)
+        {
+            return new Node(source, ref memoryPosition);
         }
     }
 }

@@ -171,9 +171,9 @@ internal class PrimitiveGroupFromMemoryData : DataSourceGeneratorAttribute<byte[
         (
             [
                 0x0a, // Node
-                0x1e, // Repeated Length
+                0x26, // Repeated Length
                     0x0a, // Field/Wire
-                    0x1c, // Node Length
+                    0x24, // Node Length
                         // Id
                         0x09, 0x01, // 1
                         // Keys

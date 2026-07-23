@@ -38,4 +38,13 @@ public class PrimitiveGroupTests
         await Assert.That(actualEqualityOperatorResult).IsFalse();
         await Assert.That(actualInequalityOperatorResult).IsTrue();
     }
+
+    [Test]
+    [PrimitiveGroupFromMemoryData]
+    public async Task AsNodeTests(byte[] source, PrimitiveGroup expectedGroup)
+    {
+        PrimitiveGroup actualResult = new Memory<byte>(source).AsPrimitiveGroup();
+
+        await Assert.That(actualResult).IsEqualTo(expectedGroup);
+    }
 }
